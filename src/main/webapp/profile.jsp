@@ -160,7 +160,6 @@
             </div>
    	</div>
 	
-		
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<!--js폴더 안에있는 bootstrap.js를 사용선언  -->

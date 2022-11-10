@@ -70,7 +70,6 @@ public class UserDAO {
 	//로그인 시도 함수 작성 끝 loginAction Page 가자;
 	}
 	
-	
 	//회원가입 정보를 넣는곳
 	public int join(User user) {
 		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?)";
@@ -87,6 +86,7 @@ public class UserDAO {
 		}
 		return -1; //데이터베이스 오류
 	}
+	//프로필 확인 함수
 	public User profile(String userID) {
 		String SQL = "SELECT * FROM USER WHERE UserID = ?";
 		try {
