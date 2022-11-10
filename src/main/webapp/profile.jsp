@@ -31,7 +31,9 @@
 			script.println("alert('로그인을 하세요.')");
 			script.println("location.href = 'login.jsp'");
 			script.println("</script>");
-				}
+		}
+		//해당글의 구체적인 내용을 BbsDAO 내부 만들었던 getBbs함수를 실행시켜주는 부분 
+		User user = new UserDAO().profile(userID);
 	%>
 	<!-- 네비게이션 구현 네비게이션이라는 것은 하나의 웹사이트의 전반적인 구성을 보여주는 역할 -->
 	<nav class="navbar navbar-default">
@@ -112,40 +114,49 @@
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>
 
+	<!-- 게시판 틀 -->
 	<div class="container">
-		 <div class="column">
-		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
-		 		<thead>
-		 			<tr>
-		 				<th	style="background-color: #eeeeee; text-align: center;">아이디</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">비밀번호</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">이름</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">성별</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">이메일</th>
-		 			</tr>
-		 		</thead>
-		 		<tbody>
-		 		<%
-                	//유저정보를 담을 인스턴스
-                    UserDAO userDAO = new UserDAO();
-		 		 	//로그인한 사람과 일치하는 사람의 데이터를 뿌려준다
-		 		 	
-		 		 	if(userID == request.getParameter("userID")){
-		 		 	
-		 		 	%>
-		 		<tr>	
-                    	<!-- 현재 유저에 대한 정보를 하나씩 데이터베이스에서 불러와서 보여준다. -->
-                        <td><%=request.getParameter("userID") %></td>
-                        <td><%=request.getParameter("userPassword")%></td>
-                        <td><%=request.getParameter("userName")%></td>
-                        <td><%=request.getParameter("userGender")%></td>
-                        <td><%=request.getParameter("userEmail")%></td>
-                    </tr>
-                    <%
-		 		 	}
-                    %>
-                  </tbody>
-              	</table>
+		<div class="row">
+				<table class="table table-striped"
+					style="text-align: center; border: 1px solid #dddddd">
+					<thead>
+						<tr>
+							<!--테이블 제목 부분 구현 -->
+							<th colspan="3" style="background-color: #eeeeee; text-align: center;">프로필</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<!-- 게시판 글 보기 내부 1행 작성 -->
+							<td>아이디</td>	
+							<td colspan="2"><%= user.getUserID() %></td>
+						</tr>
+						<tr>
+							<!-- 게시판 글 보기 내부 2행 작성 -->
+							<td>비밀번호</td>	
+							<td colspan="2"><%= user.getUserPassword() %></td>
+						</tr>
+						<tr>
+							<!-- 게시판 글 보기 3행 작성 -->
+							<td>이름</td>
+							<!-- bbs페이지에서 db에서 일자를 가져오는 소스코드를 참고 하는데 다른점은 내부 글의 데이터니까 아까만든 인스턴스에서 가져온다. -->	
+							<td colspan="2"><%= user.getUserName() %></td>
+						</tr>
+						<tr>
+							<!-- 마지막 행 내용 최소 높이를 200px; 지정-->
+							<td>성별</td>	
+							<!-- 들어갈 내용에 replaceAll을 사용해서 특수문자나 기호가 들어가도 정상 출력이 되게 해 주는 처리를 한다.
+							replaceAll("공백","&nbsp;") 공백을 nbsp로 치환해서 출력해 줌 특수문자 치환을 넣어주면 크로스 브라우징 해킹방지도 가능하다.-->
+							<td colspan="2"><%= user.getUserGender() %></td>
+						</tr>
+						<tr>
+							<!-- 게시판 글 보기 3행 작성 -->
+							<td>이메일</td>
+							<!-- bbs페이지에서 db에서 일자를 가져오는 소스코드를 참고 하는데 다른점은 내부 글의 데이터니까 아까만든 인스턴스에서 가져온다. -->	
+							<td colspan="2"><%= user.getUserEmail() %></td>
+						</tr>
+					</tbody>
+				</table>
             </div>
    	</div>
 	

@@ -4,6 +4,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import bbs.Bbs;
+
 public class UserDAO {
 	//Database 접근 객체로 사용할 conn을 선언해주고,
 	private Connection conn;
@@ -42,7 +44,7 @@ public class UserDAO {
 		try {
 			//pstmt에 어떠한 정해진 sql문장을 데이터베이스에 삽입하는 형식으로 인스턴스를 가져온다.
 			pstmt = conn.prepareStatement(SQL); 
-			//*2.쿼리 중 userID = ? 에 해당하는 부분에 입력받은 userID를 넣어주는 것이다. 그니까 바로 쿼리문으로 드가면 해킹틈 생기니까 setString으로 한번 거치고간다. 2말2야
+			//*2.쿼리 중 userID = ? 에 해당하는 부분에 입력받은 userID를 넣어주는 것이다. 그니까 바로 쿼리문으로 드가면 해킹틈 생기니까 setString으로 한번 거치고간다.
 			pstmt.setString(1, userID);
 			//이렇게 db에 넣을 쿼리문 셋팅이 끝났다. 실행한 결과를 rs에다가 담아준다.
 			rs = pstmt.executeQuery();
@@ -84,5 +86,29 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return -1; //데이터베이스 오류
+	}
+	public User profile(String userID) {
+		String SQL = "SELECT * FROM USER WHERE UserID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, userID);
+			rs = pstmt.executeQuery();
+			//결과가 나왔을때 실행되어
+			if (rs.next()) {
+				//bbs인스턴스 내에 결과 값으로 나온 데이터를 다 집어 처넣고
+				User user= new User();
+				user.setUserID(rs.getString(1));
+				user.setUserPassword(rs.getString(2));
+				user.setUserName(rs.getString(3));
+				user.setUserGender(rs.getString(4));
+				user.setUserEmail(rs.getString(5));
+				//그 결과를 getBbs함수를 불러온 대상에게 반환 해 준다~ 
+				return user;
+				
+				}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null; //데이터베이스 오류
 	}
 }
