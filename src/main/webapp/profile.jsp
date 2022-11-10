@@ -1,41 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
-<!-- 22-11-06 캘린더java -->
-<%@page import="java.util.Calendar"%>
-<%@ page trimDirectiveWhitespaces="true" %>
-<%
-	request.setCharacterEncoding("utf-8");
-
-	Calendar cal = Calendar.getInstance();
-	
-	// 시스템 오늘날짜
-	int ty = cal.get(Calendar.YEAR);
-	int tm = cal.get(Calendar.MONTH)+1;
-	int td = cal.get(Calendar.DATE);
-	
-	int year = cal.get(Calendar.YEAR);
-	int month = cal.get(Calendar.MONTH)+1;
-	
-	// 파라미터 받기
-	String sy = request.getParameter("year");
-	String sm = request.getParameter("month");
-	
-	if(sy!=null) { // 넘어온 파라미터가 있으면
-		year = Integer.parseInt(sy);
-	}
-	if(sm!=null) {
-		month = Integer.parseInt(sm);
-	}
-	
-	cal.set(year, month-1, 1);
-	year = cal.get(Calendar.YEAR);
-	month = cal.get(Calendar.MONTH)+1;
-	
-	int week = cal.get(Calendar.DAY_OF_WEEK); // 1(일)~7(토)
-%>
-<!-- 22-11-06 캘린더java -->
-
+<!--javaBeans 들고오기-->
+<%@ page import="user.User"%>
+<!-- db접근객체 가져오기 (함수 갖다쓰기)-->
+<%@ page import="user.UserDAO"%>
 
 <!DOCTYPE html>
 <html>
@@ -47,90 +16,22 @@
 <link rel="stylesheet" href="css/custom.css">
 <title>독서실 관리</title>
 
-<!-- 22-11-06 캘린더css -->
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<style type="text/css">
-*{
-	margin: 0; padding: 0;
-    box-sizing: border-box;
-}
-.navbar navbar-default{
-	width: 896px;	
-}
-
-body {
-	font-size: 14px;
-	font-family: "맑은 고딕", 나눔고딕, 돋움, sans-serif;
-}
-
-a {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-a:active, a:hover {
-	text-decoration: underline;
-	color: #F28011;
-}
-
-.calendar {
-	width: 60%;
-	margin: 30px auto;
-}
-.calendar .title{
-	height: 37px;
-	line-height: 37px;
-	table-align: center;
-	font-weight: 600;
-}
-
-.calendar table {
-	width: 100%;
-	height: 600px;
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-
-.calendar table thead tr:first-child{
-	background: #f6f6f6;
-}
-
-.calendar table td{
-	padding: 10px;
-	text-align: center;
-	border: 1px solid #ccc;
-}
-
-.calendar table td:nth-child(7n+1){
-	color: red;
-}
-.calendar table td:nth-child(7n){
-	color: blue;
-}
-.calendar table td.gray {
-	color: #ccc;
-}
-.calendar table td.today{
-	font-weight:700;
-	background: #E6FFFF;
-}
-
-.calendar .footer{
-	height: 25px;
-	line-height: 25px;
-	text-align: right;
-	font-size: 12px;
-}
-</style>
-<!-- 22-11-06 캘린더css -->
 </head>
 <body>
 	<%
+		//로그인한사람이라면	 userID라는 변수에 해당 아이디가 담기고 그렇지 않으면 null값
 		String userID = null;
 		if(session.getAttribute("userID")!=null){
 			userID = (String) session.getAttribute("userID");
 		}
+		//로그인 안한 경우에 로그인 페이지로 돌려보내 주는 java code 작성
+		if(userID == null) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('로그인을 하세요.')");
+			script.println("location.href = 'login.jsp'");
+			script.println("</script>");
+				}
 	%>
 	<!-- 네비게이션 구현 네비게이션이라는 것은 하나의 웹사이트의 전반적인 구성을 보여주는 역할 -->
 	<nav class="navbar navbar-default">
@@ -153,7 +54,7 @@ a:active, a:hover {
 			<!-- div 내부에 ul은 하나의 어떠한 리스트를 보여줄때 사용 -->
 			<ul class="nav navbar-nav">
 				<!-- 리스트 내부에 li로 원소를 구현 메인으로 이동하게만들고-->
-				<li class="active"><a href="main.jsp">메인</a></li>
+				<li><a href="main.jsp">메인</a></li>
 				<!-- 게시판으로 이동하게 만든다. -->
 				<li><a href="bbs.jsp">게시판</a></li>
 						<!-- 10-28 프로토타입 위해 추가 -->
@@ -196,76 +97,59 @@ a:active, a:hover {
 					<!--접속하기 아래에 드랍다운메뉴 생성  -->
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
-						<li><a href="profile.jsp">프로필</a></li>
+						<li class="active"><a href="profile.jsp">프로필</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
 			</ul>	
 			<%
 				}
-			%>	
+			%>
+			<!-- <ul class="nav navbar-nav navbar-right">-->
+			
+				
 		</div>
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>
-	
-	<!-- 22-11-06 캘린더html -->
-	<div class="calendar">
-	<div class="title">
-		<a href="main.jsp?year=<%=year%>&month=<%=month-1%>">&lt;</a>
-		<label><%=year%>년 <%=month%>월</label>
-		<a href="main.jsp?year=<%=year%>&month=<%=month+1%>">&gt;</a>
-	</div>
-	
-	<table>
-		<thead>
-			<tr>
-				<td>일</td>
-				<td>월</td>
-				<td>화</td>
-				<td>수</td>
-				<td>목</td>
-				<td>금</td>
-				<td>토</td>
-			</tr>
-		</thead>
-		<tbody>
-<%
-			// 1일 앞 달
-			Calendar preCal = (Calendar)cal.clone();
-			preCal.add(Calendar.DATE, -(week-1));
-			int preDate = preCal.get(Calendar.DATE);
-			
-			out.print("<tr>");
-			// 1일 앞 부분
-			for(int i=1; i<week; i++) {
-				//out.print("<td>&nbsp;</td>");
-				out.print("<td class='gray'>"+(preDate++)+"</td>");
-			}
-			
-			// 1일부터 말일까지 출력
-			int lastDay = cal.getActualMaximum(Calendar.DATE);
-			String cls;
-			for(int i=1; i<=lastDay; i++) {
-				cls = year==ty && month==tm && i==td ? "today":"";
-				
-				out.print("<td class='"+cls+"'>"+i+"</td>");
-				if(lastDay != i && (++week)%7 == 1) {
-					out.print("</tr><tr>");
-				}
-			}
-			
-			// 마지막 주 마지막 일자 다음 처리
-			int n = 1;
-			for(int i = (week-1)%7; i<6; i++) {
-				// out.print("<td>&nbsp;</td>");
-				out.print("<td class='gray'>"+(n++)+"</td>");
-			}
-			out.print("</tr>");
-%>		
-		</tbody>
-	</table>
-	<!-- 22-11-06 캘린더html -->
 
+	<div class="container">
+		 <div class="column">
+		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+		 		<thead>
+		 			<tr>
+		 				<th	style="background-color: #eeeeee; text-align: center;">아이디</th>
+		 				<th	style="background-color: #eeeeee; text-align: center;">비밀번호</th>
+		 				<th	style="background-color: #eeeeee; text-align: center;">이름</th>
+		 				<th	style="background-color: #eeeeee; text-align: center;">성별</th>
+		 				<th	style="background-color: #eeeeee; text-align: center;">이메일</th>
+		 			</tr>
+		 		</thead>
+		 		<tbody>
+		 		<%
+                	//유저정보를 담을 인스턴스
+                    UserDAO userDAO = new UserDAO();
+		 		 	//로그인한 사람과 일치하는 사람의 데이터를 뿌려준다
+		 		 	
+		 		 	if(userID == request.getParameter("userID")){
+		 		 	
+		 		 	%>
+		 		<tr>	
+                    	<!-- 현재 유저에 대한 정보를 하나씩 데이터베이스에서 불러와서 보여준다. -->
+                        <td><%=request.getParameter("userID") %></td>
+                        <td><%=request.getParameter("userPassword")%></td>
+                        <td><%=request.getParameter("userName")%></td>
+                        <td><%=request.getParameter("userGender")%></td>
+                        <td><%=request.getParameter("userEmail")%></td>
+                    </tr>
+                    <%
+		 		 	}
+                    %>
+                  </tbody>
+              	</table>
+            </div>
+   	</div>
+	
+		
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<!--js폴더 안에있는 bootstrap.js를 사용선언  -->

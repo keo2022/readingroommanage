@@ -20,24 +20,24 @@
     </script>
 <style>
 .seatAF {
-	width: 1000px;
-	margin-left: 800px;
-	margin-top: 200px;
+	width: 100px;
+	margin-left: 80px;
+	margin-top: 80px;
 }
 .seatAB {
-	width: 1000px;
+	width: 100px;
 	margin-top: 50px;
-	margin-left: 800px;
+	margin-left: 80px;
 }
 .seatBF {
-	width: 1000px;
+	width: 100px;
 	margin-top: 50px;
-	margin-left: 800px;
+	margin-left: 80px;
 }
 .seatBB {
-	width: 1000px;
+	width: 100px;
 	margin-top: 50px;
-	margin-left: 800px;
+	margin-left: 80px;
 }
 </style>
 </head>
@@ -69,11 +69,11 @@
 			<!-- div 내부에 ul은 하나의 어떠한 리스트를 보여줄때 사용 -->
 			<ul class="nav navbar-nav">
 				<!-- 리스트 내부에 li로 원소를 구현 메인으로 이동하게만들고-->
-				<li class="active"><a href="main.jsp">메인</a></li>
+				<li><a href="main.jsp">메인</a></li>
 				<!-- 게시판으로 이동하게 만든다. -->
 				<li><a href="bbs.jsp">게시판</a></li>
 						<!-- 10-28 프로토타입 위해 추가 -->
-				<li><a href="seat.jsp">좌석 확인</a></li>
+				<li class="active"><a href="seat.jsp">좌석 확인</a></li>
 				
 			</ul>
 			<%
