@@ -11,33 +11,26 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
 <title>독서실 관리</title>
-    <script>
-        function showPopup(){
-        	
-            window.open("test.jsp","공부 시작종료","width=400, height=300, top=10, left=10");
-        }
-        
-    </script>
 <style>
 .seatAF {
 	width: 100px;
-	margin-left: 80px;
 	margin-top: 80px;
+	margin-left: 30%;
 }
 .seatAB {
 	width: 100px;
 	margin-top: 50px;
-	margin-left: 80px;
+	margin-left: 30%;
 }
 .seatBF {
 	width: 100px;
 	margin-top: 50px;
-	margin-left: 80px;
+	margin-left: 30%;
 }
 .seatBB {
 	width: 100px;
 	margin-top: 50px;
-	margin-left: 80px;
+	margin-left: 30%;
 }
 </style>
 </head>
@@ -92,12 +85,31 @@
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
 						<li><a href="login.jsp">로그인</a></li>
-						<!-- active는 한 개만 선언 -->
-						<li><a href="join.jsp">회원가입</a></li>
 					</ul>
 				</li>
-			</ul>		
+			</ul>
 			<% 
+				} else if(userID.equals("1111")) {
+			%>
+			<!-- 원소를 하나 구현해 준다. 네비게이션 우측 슬라이드메뉴 구현  -->
+				<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<!-- 안에 a태그를 하나 삽입한다. href="#"은 링크없음을 표시한다. -->
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">회원관리
+						<!-- 이건 하나의 아이콘 같은것 a태그 내부 삽입-->
+						<span class="caret"></span></a>
+					<!--접속하기 아래에 드랍다운메뉴 생성  -->
+					<ul class="dropdown-menu">
+						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
+						<!-- 관리자는 회원등록을 할 수 있다. -->
+						<li><a href="join.jsp">회원등록</a></li>
+						<li><a href="logoutAction.jsp">로그아웃</a></li>
+					</ul>
+				</li>
+			</ul>			
+			<%
 				} else {
 			%>
 			<!-- 원소를 하나 구현해 준다. 네비게이션 우측 슬라이드메뉴 구현  -->
@@ -112,7 +124,7 @@
 					<!--접속하기 아래에 드랍다운메뉴 생성  -->
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
-						<li><a href="logoutAction.jsp">프로필</a></li>
+						<li><a href="profile.jsp">프로필</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
@@ -128,32 +140,32 @@
 	</nav>
 
 		<div class = "seatAF">
-		<input type="button" value="A-0" onclick="showPopup();">
-		<input type="button" value="A-1" onclick="showPopup();">
-		<input type="button" value="A-2" onclick="showPopup();">
-		<input type="button" value="A-3" onclick="showPopup();">
-		<input type="button" value="A-4" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-0','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-0">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-1','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-1">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-2','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-2">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-3','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-3">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-4','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-4">
 		</div>
 		<div class = "seatAB">
-		<input type="button" value="A-5" onclick="showPopup();">
-		<input type="button" value="A-6" onclick="showPopup();">
-		<input type="button" value="A-7" onclick="showPopup();">
-		<input type="button" value="A-8" onclick="showPopup();">
-		<input type="button" value="A-9" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-5','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-5">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-6','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-6">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-7','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-7">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-8','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-8">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=A-9','공부 시작종료','width=400, height=300, top=10, left=10')" value="A-9">
 		</div>
 		<div class = "seatBF">
-		<input type="button" value="B-0" onclick="showPopup();">
-		<input type="button" value="B-1" onclick="showPopup();">
-		<input type="button" value="B-2" onclick="showPopup();">
-		<input type="button" value="B-3" onclick="showPopup();">
-		<input type="button" value="B-4" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-0','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-0" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-1','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-1" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-2','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-2" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-3','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-3" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-4','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-4" onclick="showPopup();">
 		</div>
 		<div class = "seatBB">
-		<input type="button" value="B-5" onclick="showPopup();">
-		<input type="button" value="B-6" onclick="showPopup();">
-		<input type="button" value="B-7" onclick="showPopup();">
-		<input type="button" value="B-8" onclick="showPopup();">
-		<input type="button" value="B-9" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-5','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-5" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-6','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-6" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-7','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-7" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-8','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-8" onclick="showPopup();">
+		<input type="button" onclick="window.open('selectseat.jsp?seat=B-9','공부 시작종료','width=400, height=300, top=10, left=10')" value="B-9" onclick="showPopup();">
 		</div>
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

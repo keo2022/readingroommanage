@@ -14,6 +14,8 @@
 <jsp:setProperty name="user" property="userName" />
 <jsp:setProperty name="user" property="userGender" />
 <jsp:setProperty name="user" property="userEmail" />
+<jsp:setProperty name="user" property="lockerNum" />
+<jsp:setProperty name="user" property="userAvailable" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,13 +31,13 @@
 	if (userID != null) {
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("alert('이미 로그인이 되어있습니다.')");
+		script.println("alert('회원등록이 완료되었습니다.')");
 		script.println("location.href = 'main.jsp'");
 		script.println("</script>");
 	}
 	//입력 안된 부분이 있을 시 회원가입 시에 사용자가 입력을 안한 모든 경우의 수를 입력해서 조건을 걸어주고,
 	if (user.getUserID() == null || user.getUserPassword() == null || user.getUserName() == null
-			|| user.getUserGender() == null || user.getUserEmail() == null) {
+		|| user.getUserGender() == null || user.getUserEmail() == null || user.getLockerNum() == '0' || user.getUserAvailable() == null) {
 		//PrintWriter를 이용해서
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
@@ -59,7 +61,7 @@
 			script.println("</script>");
 		//정상적인 실행이 되었을때.
 		} else {
-			session.setAttribute("userID", user.getUserID());
+			//session.setAttribute("userID", user.getUserID());
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			//메인페이지로 이동.

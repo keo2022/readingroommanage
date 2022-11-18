@@ -53,8 +53,6 @@
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
 						<li class="active"><a href="login.jsp">로그인</a></li>
-						<!-- active는 한 개만 선언 -->
-						<li><a href="join.jsp">회원가입</a></li>
 					</ul>
 				</li>
 			</ul>	

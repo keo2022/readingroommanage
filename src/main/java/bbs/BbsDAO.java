@@ -63,7 +63,7 @@ public class BbsDAO {
 						PreparedStatement pstmt = conn.prepareStatement(SQL);
 						rs = pstmt.executeQuery();
 						if(rs.next()) {
-							//나온 결과물에 1을 더해서 다음 게시글~ 
+							//나온 결과물에 1을 더해서 다음 게시글을 불러온다.
 							return rs.getInt(1) + 1;
 						}
 						//현재 쓰이는 게시글이 하나도 없는 경우에는 결과가 안나오기 때문에 1을 리턴해준다.
@@ -163,7 +163,7 @@ public class BbsDAO {
 						rs = pstmt.executeQuery();
 						//결과가 나왔을때 실행되어
 						if (rs.next()) {
-							//bbs인스턴스 내에 결과 값으로 나온 데이터를 다 집어 처넣고
+							//bbs인스턴스 내에 결과 값으로 나온 데이터를 다 집어 넣고
 							Bbs bbs = new Bbs();
 							bbs.setBbsID(rs.getInt(1));
 							bbs.setBbsTitle(rs.getString(2));
@@ -171,7 +171,7 @@ public class BbsDAO {
 							bbs.setBbsDate(rs.getString(4));
 							bbs.setBbsContent(rs.getString(5));
 							bbs.setBbsAvailable(rs.getInt(6));
-							//그 결과를 getBbs함수를 불러온 대상에게 반환 해 준다~ 
+							//그 결과를 getBbs함수를 불러온 대상에게 반환 해 준다
 							return bbs;
 							
 							}
@@ -181,7 +181,7 @@ public class BbsDAO {
 					//해당 글이 존재하지 않으면 null반환 
 					return null;
 				}
-				// 특정한 번호의 매개변수로 들어온 제목과 번호로 바꿔치기 해주는 함수를 만든다.
+				// 특정한 번호의 매개변수로 들어온 제목과 번호로 바꿔주는 함수를 만든다.
 				public int update(int bbsID, String bbsTitle, String bbsContent) {
 					//Table 내부에서 WHERE bbs ID 특정한 내부의 ID값에 대한 Title과 Content를 바꿔주겠다는 쿼리를 작성
 					String SQL = "UPDATE BBS SET bbsTitle = ?, bbsContent = ? WHERE bbsID = ?";

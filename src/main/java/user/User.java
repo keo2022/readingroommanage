@@ -6,6 +6,9 @@ public class User {
 	private String userName;
 	private String userGender;
 	private String userEmail;
+	private int lockerNum;
+	private String userAvailable;
+	
 	
 	public String getUserID() {
 		return userID;
@@ -46,4 +49,21 @@ public class User {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+	
+	public int getLockerNum() {
+		return lockerNum;
+	}
+
+	public void setLockerNum(int lockerNum) {
+		this.lockerNum = lockerNum;
+	}
+	
+	public String getUserAvailable() {
+		return userAvailable;
+	}
+
+	public void setUserAvailable(String userAvailable) {
+		this.userAvailable = userAvailable;
+	}
+
 }

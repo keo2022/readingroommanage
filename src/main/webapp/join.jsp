@@ -52,9 +52,8 @@
 					<!--접속하기 아래에 드랍다운메뉴 생성  -->
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
-						<li class="active"><a href="login.jsp">로그인</a></li>
-						<!-- active는 한 개만 선언 -->
-						<li><a href="join.jsp">회원가입</a></li>
+						<li><a href="join.jsp">회원등록</a></li>
+						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
 			</ul>	
@@ -72,7 +71,7 @@
 				<!-- 양식 삽입 post는 회원가입이나 로그인같이 어떠한 정보값을 숨기면서 보내는 메소드/ 로그인 Action페이지로 정보를보내겠다-->
 				<form method="post" action="joinAction.jsp">
 					<!-- 회원 가입에 맞게 위에 액션은 joinAction페이지로 밑에 제목은 회원가입 화면으로 변경 -->
-					<h3 style="text-align: center;">회원가입 화면</h3>
+					<h3 style="text-align: center;">회원등록 화면</h3>
 					<div class="form-group">
 						<!-- 회원 가입에서도 userID or userPassword는 동일하게 가져가고, 회원가입에 필요한 나머지 속성추가 -->
 						<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
@@ -103,8 +102,18 @@
 						<!-- placeholder는 아무런 입력이 없을때 띄워주는 값 -->
 						<input type="email" class="form-control" placeholder="이메일" name="userEmail" maxlength="20">
 						</div>
+													<!-- 사물한 번호 작성부분 구현 -->
+							<div class="form-group">
+						<!-- placeholder는 아무런 입력이 없을때 띄워주는 값 -->
+						<input type="text" class="form-control" placeholder="사물함번호" name="lockerNum" maxlength="20">
+						</div>
+													<!-- 이용 가능 기간 작성부분 구현 -->
+							<div class="form-group">
+						<!-- placeholder는 아무런 입력이 없을때 띄워주는 값 -->
+						<input type="text" class="form-control" placeholder="이용가능기간" name="userAvailable" maxlength="20">
+						</div>
 						<!-- 버튼 또한 회원가입으로 value변경 -->	
-						<input type="submit" class="btn btn-primary form-control" value="회원가입">
+						<input type="submit" class="btn btn-primary form-control" value="회원등록">
 				</form>	
 			</div>	
 		</div>

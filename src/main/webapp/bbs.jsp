@@ -76,11 +76,30 @@
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
 						<li><a href="login.jsp">로그인</a></li>
-						<!-- active는 한 개만 선언 -->
-						<li><a href="join.jsp">회원가입</a></li>
 					</ul>
 				</li>
-			</ul>		
+			</ul>
+			<% 
+				} else if(userID.equals("1111")) {
+			%>
+			<!-- 원소를 하나 구현해 준다. 네비게이션 우측 슬라이드메뉴 구현  -->
+				<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<!-- 안에 a태그를 하나 삽입한다. href="#"은 링크없음을 표시한다. -->
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">회원관리
+						<!-- 이건 하나의 아이콘 같은것 a태그 내부 삽입-->
+						<span class="caret"></span></a>
+					<!--접속하기 아래에 드랍다운메뉴 생성  -->
+					<ul class="dropdown-menu">
+						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
+						<!-- 관리자는 회원등록을 할 수 있다. -->
+						<li><a href="join.jsp">회원등록</a></li>
+						<li><a href="logoutAction.jsp">로그아웃</a></li>
+					</ul>
+				</li>
+			</ul>			
 			<% 
 				} else {
 			%>
@@ -96,7 +115,7 @@
 					<!--접속하기 아래에 드랍다운메뉴 생성  -->
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
-						<li><a href="logoutAction.jsp">프로필</a></li>
+						<li><a href="profile.jsp">프로필</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>

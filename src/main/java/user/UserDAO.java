@@ -72,7 +72,7 @@ public class UserDAO {
 	
 	//회원가입 정보를 넣는곳
 	public int join(User user) {
-		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?)";
+		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, user.getUserID());
@@ -80,6 +80,8 @@ public class UserDAO {
 			pstmt.setString(3, user.getUserName());
 			pstmt.setString(4, user.getUserGender());
 			pstmt.setString(5, user.getUserEmail());
+			pstmt.setInt(6, user.getLockerNum());
+			pstmt.setString(7, user.getUserAvailable());
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -95,14 +97,16 @@ public class UserDAO {
 			rs = pstmt.executeQuery();
 			//결과가 나왔을때 실행되어
 			if (rs.next()) {
-				//bbs인스턴스 내에 결과 값으로 나온 데이터를 다 집어 처넣고
+				//user인스턴스 내에 결과 값으로 나온 데이터를 다 집어 넣고
 				User user= new User();
 				user.setUserID(rs.getString(1));
 				user.setUserPassword(rs.getString(2));
 				user.setUserName(rs.getString(3));
 				user.setUserGender(rs.getString(4));
 				user.setUserEmail(rs.getString(5));
-				//그 결과를 getBbs함수를 불러온 대상에게 반환 해 준다~ 
+				user.setLockerNum(rs.getInt(6));
+				user.setUserAvailable(rs.getString(7));
+				//그 결과를 profile화면에 반환 해 준다~ 
 				return user;
 				
 				}

@@ -14,11 +14,11 @@
 <!-- 스타일시트 참조  -->
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
-<title>jsp 게시판 웹사이트</title>
+<title>독서실 관리</title>
 </head>
 <body>
 	<%
-		//로긴한사람이라면	 userID라는 변수에 해당 아이디가 담기고 그렇지 않으면 null값
+		//로그인한사람이라면	 userID라는 변수에 해당 아이디가 담기고 그렇지 않으면 null값
 		String userID = null;
 		if (session.getAttribute("userID") != null) {
 			userID = (String) session.getAttribute("userID");
@@ -54,13 +54,14 @@
                 <span class ="icon-bar"></span>
                 <span class ="icon-bar"></span>
             </button>
-            <a class ="navbar-brand" href="main.jsp">JSP 게시판 웹 사이트</a>
+            <a class ="navbar-brand" href="main.jsp">독서실 관리</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="main.jsp">메인</a></li>
                 <!-- 현재의 게시판 화면이라는 것을 사용자에게 보여주는 부분 -->
                 <li class="active"><a href="bbs.jsp">게시판</a></li>
+                <li><a href="seat.jsp">좌석 확인</a></li>
             </ul>
 			<%
 				if (userID == null) {
@@ -71,10 +72,30 @@
 					aria-expanded="false">접속하기<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="login.jsp">로그인</a></li>
-						<li><a href="join.jsp">회원가입</a></li>
 					</ul>
 				</li>
 			</ul>
+			<% 
+				} else if(userID.equals("1111")) {
+			%>
+			<!-- 원소를 하나 구현해 준다. 네비게이션 우측 슬라이드메뉴 구현  -->
+				<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<!-- 안에 a태그를 하나 삽입한다. href="#"은 링크없음을 표시한다. -->
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">회원관리
+						<!-- 이건 하나의 아이콘 같은것 a태그 내부 삽입-->
+						<span class="caret"></span></a>
+					<!--접속하기 아래에 드랍다운메뉴 생성  -->
+					<ul class="dropdown-menu">
+						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
+						<!-- 관리자는 회원등록을 할 수 있다. -->
+						<li><a href="join.jsp">회원등록</a></li>
+						<li><a href="logoutAction.jsp">로그아웃</a></li>
+					</ul>
+				</li>
+			</ul>	
 			<%
 				} else {
 			%>

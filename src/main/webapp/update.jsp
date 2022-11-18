@@ -14,7 +14,7 @@
 <!-- 스타일시트 참조  -->
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
-<title>jsp 게시판 웹사이트</title>
+<title>독서실 관리</title>
 </head>
 <body>
 	<%
@@ -69,13 +69,14 @@
                 <span class ="icon-bar"></span>
                 <span class ="icon-bar"></span>
             </button>
-            <a class ="navbar-brand" href="main.jsp">JSP 게시판 웹 사이트</a>
+            <a class ="navbar-brand" href="main.jsp">독서실 관리</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="main.jsp">메인</a></li>
                 <!-- 현재의 게시판 화면이라는 것을 사용자에게 보여주는 부분 -->
                 <li class="active"><a href="bbs.jsp">게시판</a></li>
+                <li><a href="seat.jsp">좌석 확인</a></li>
             </ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
