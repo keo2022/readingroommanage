@@ -24,7 +24,7 @@ public class TimeDAO {
 				//db에 접속하는 ID를 담는 부분
 				String dbID = "root";
 				//db에 접속하는 PW를 담는 부분
-				String dbPassword = "123456";
+				String dbPassword = "0000";
 				//mysql에 접속할 수 있는 driver를 찾을수 있게 해주는 코드 driver라는건 mysql에 접속할 수 있도록 매개체 역할을 해주는 라이브러리이다.
 				//강의버전보다 한참 높은 버전의 디비를 써서 드라이버 주소가 좀다름
 				Class.forName("com.mysql.cj.jdbc.Driver");
