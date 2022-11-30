@@ -128,6 +128,15 @@
 	</nav>
 	<div class="container">
 		 <div class="row">
+		 <form method="post" action="searchedBbs.jsp">
+			<div class="col-lg-4">
+				<input type="text" class="form-control pull-right" placeholder="Search" name="searchWord" />
+				</div>
+				<button class="btn btn-primary" type="submit" >
+				<span class="glyphicon glyphicon-search">
+				</span>
+				</button>
+			</form>
 		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 		 		<thead>
 		 			<tr>

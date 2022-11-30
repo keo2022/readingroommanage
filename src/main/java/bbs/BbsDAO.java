@@ -57,7 +57,8 @@ public class BbsDAO {
 				public int getNext() { 
 					//들어가는 SQL문장은 bbsID를 가져오는데 게시글 번호같은 경우는 1번부터 하나씩 늘어나야 하기때문에
 					//마지막에 쓰인 글을 가져와서 그 글번호에다가 1을 더한 값이 그 다음번호가 되기때문에 내림차순으로 들고와서 +1해 주는 방식을 사용한다.
-					String SQL = "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
+					//String SQL = "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
+					String SQL = "select NUM from (select @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A order by NUM desc";
 					try {
 						//나머진 그대로 가고 리턴값만 수정
 						PreparedStatement pstmt = conn.prepareStatement(SQL);
@@ -74,6 +75,7 @@ public class BbsDAO {
 					//데이터베이스 오류가 발생했을때 -1이 반환하면서 프로그래머에게 오류를 알려준다.
 					return -1; 
 				}
+				
 				//실제로 글을 작성하는 write함수 작성 Title,ID,Content를 외부에서 받아서 함수를 실행 시킨다.
 				public int write(String bbsTitle, String userID, String bbsContent) { 
 					//BBS 테이블에 들어갈 인자 6개를 ?로 선언 해준다.
@@ -153,6 +155,7 @@ public class BbsDAO {
 					//그게 아닐경우 false를 리턴 
 					return false; 		
 				}
+				
 				//글 내용을 볼수있는 함수 구현 (int bbsID)값으로 선언을 해서 특정한 ID에 해당하는 게시글을 그대로 가져오도록하자.
 				public Bbs getBbs(int bbsID){
 					//bbsID가 특정한 숫자일때 어떠한 행위를 실행할 수 있는 쿼리를 작성
@@ -213,5 +216,80 @@ public class BbsDAO {
 					}
 					//나머지는 디비오류
 					return -1;
+				}
+				
+				public int getSearchedNext(String searchWord) {
+					//String SQL = "select bbsID from bbs where bbsAvailable = 1 and bbsTitle like '%" + searchWord + "%' order by bbsDate desc";
+					String SQL = "select NUM from (select *, @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A where bbsTitle LIKE ? ORDER BY NUM DESC";
+					try {
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						pstmt.setString(1, "%" + searchWord + "%");
+						rs = pstmt.executeQuery();
+						if(rs.next()) {
+							return rs.getInt(1)+1;
+						}
+						return 1;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return -1;
+				}
+				
+				public ArrayList<Bbs> getSearchedList(int pageNumber, String searchWord){
+					
+					int no2=0;
+					
+					if(getNext()>pageNumber*10) {
+						no2 = pageNumber*10;
+					} else {
+					  no2 = getNext();
+					}
+					
+					int no1=(pageNumber -1)*10+1;
+					
+					/*String SQL = "select * from (select *, @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A where bbsTitle like '%"
+							+ searchWord
+							+ "%' and NUM between"
+							+ no1
+							+ " and "
+							+ no2;*/
+					
+					String SQL = "select * from (select *, @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A where bbsTitle like ? and NUM between ? and ?";
+							
+					ArrayList<Bbs> list = new ArrayList<Bbs>();
+					try { 
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						pstmt.setString(1, "%" + searchWord + "%");
+						pstmt.setInt(2, no1);
+						pstmt.setInt(3, no2);
+						rs = pstmt.executeQuery();
+						while(rs.next()) {
+							Bbs bbs = new Bbs();
+							bbs.setBbsID(rs.getInt(1));
+							bbs.setBbsTitle(rs.getString(2));
+							bbs.setUserID(rs.getString(3));
+							bbs.setBbsDate(rs.getString(4));
+							bbs.setBbsContent(rs.getString(5));
+							bbs.setBbsAvailable(rs.getInt(6));
+							list.add(bbs);
+						}
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					return list;
+				}
+				
+				public boolean searchedNextPage(int pageNumber,String searchWord) {
+					
+					try {
+						if(getSearchedNext(searchWord)>(pageNumber)*10) {
+							return true;
+						} else {
+							return false;
+						}
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					return false;
 				}
 	 }
