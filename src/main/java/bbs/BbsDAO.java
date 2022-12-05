@@ -57,7 +57,8 @@ public class BbsDAO {
 				public int getNext() { 
 					//들어가는 SQL문장은 bbsID를 가져오는데 게시글 번호같은 경우는 1번부터 하나씩 늘어나야 하기때문에
 					//마지막에 쓰인 글을 가져와서 그 글번호에다가 1을 더한 값이 그 다음번호가 되기때문에 내림차순으로 들고와서 +1해 주는 방식을 사용한다.
-					String SQL = "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
+					//String SQL = "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
+					String SQL = "select NUM from (select @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A order by NUM desc";
 					try {
 						//나머진 그대로 가고 리턴값만 수정
 						PreparedStatement pstmt = conn.prepareStatement(SQL);
@@ -74,10 +75,11 @@ public class BbsDAO {
 					//데이터베이스 오류가 발생했을때 -1이 반환하면서 프로그래머에게 오류를 알려준다.
 					return -1; 
 				}
+				
 				//실제로 글을 작성하는 write함수 작성 Title,ID,Content를 외부에서 받아서 함수를 실행 시킨다.
-				public int write(String bbsTitle, String userID, String bbsContent) { 
+				public int write(String bbsTitle, String userID, String bbsContent, String bbsCategory) { 
 					//BBS 테이블에 들어갈 인자 6개를 ?로 선언 해준다.
-					String SQL = "INSERT INTO BBS VALUES(?, ?, ?, ?, ?, ?)";
+					String SQL = "INSERT INTO BBS VALUES(?, ?, ?, ?, ?, ?, ?)";
 					try {
 						PreparedStatement pstmt = conn.prepareStatement(SQL);
 						pstmt.setInt(1, getNext());
@@ -88,6 +90,7 @@ public class BbsDAO {
 						//이 인자는 bbsAvailable이기 때문에 처음에 글이 작성되었을때는 글이 보여지는 형태가
 						//되어야하고 삭제가 안된상태니까 1을 넣어준다.
 						pstmt.setInt(6,1);
+						pstmt.setString(7, bbsCategory);
 						//INSERT같은 경우에는 성공했을때 0이상의 값을 반환하기 때문에 return을 이렇게 작성해준다.
 						return pstmt.executeUpdate();
 					} catch (Exception e) {
@@ -123,6 +126,7 @@ public class BbsDAO {
 							bbs.setBbsContent(rs.getString(5));
 							//BBS에 담긴 모든 속성을 다빼오기 때문에 각각 다 데이터를 담아서.
 							bbs.setBbsAvailable(rs.getInt(6));
+							bbs.setBbsCategory(rs.getString(7));
 							//해당 리스트를 만든 bbs인스턴스에 담아서 반환 한다.
 							list.add(bbs);
 						}
@@ -153,6 +157,7 @@ public class BbsDAO {
 					//그게 아닐경우 false를 리턴 
 					return false; 		
 				}
+				
 				//글 내용을 볼수있는 함수 구현 (int bbsID)값으로 선언을 해서 특정한 ID에 해당하는 게시글을 그대로 가져오도록하자.
 				public Bbs getBbs(int bbsID){
 					//bbsID가 특정한 숫자일때 어떠한 행위를 실행할 수 있는 쿼리를 작성
@@ -215,4 +220,116 @@ public class BbsDAO {
 					return -1;
 				}
 				
+				public int getSearchedNext(String searchWord) {
+					//String SQL = "select bbsID from bbs where bbsAvailable = 1 and bbsTitle like '%" + searchWord + "%' order by bbsDate desc";
+					String SQL = "select NUM from (select *, @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A where bbsTitle LIKE ? ORDER BY NUM DESC";
+					try {
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						pstmt.setString(1, "%" + searchWord + "%");
+						rs = pstmt.executeQuery();
+						if(rs.next()) {
+							return rs.getInt(1)+1;
+						}
+						return 1;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return -1;
+				}
+				
+				public ArrayList<Bbs> getSearchedList(int pageNumber, String searchWord){
+					
+					int no2=0;
+					
+					if(getNext()>pageNumber*10) {
+						no2 = pageNumber*10;
+					} else {
+					  no2 = getNext();
+					}
+					
+					int no1=(pageNumber -1)*10+1;
+					
+					/*String SQL = "select * from (select *, @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A where bbsTitle like '%"
+							+ searchWord
+							+ "%' and NUM between"
+							+ no1
+							+ " and "
+							+ no2;*/
+					
+					String SQL = "select * from (select *, @rownum:=@rownum+1 as NUM from bbs, (select @rownum:=0) as R where bbsAvailable = 1 order by bbsDate desc) as A where bbsTitle like ? and NUM between ? and ?";
+							
+					ArrayList<Bbs> list = new ArrayList<Bbs>();
+					try { 
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						pstmt.setString(1, "%" + searchWord + "%");
+						pstmt.setInt(2, no1);
+						pstmt.setInt(3, no2);
+						rs = pstmt.executeQuery();
+						while(rs.next()) {
+							Bbs bbs = new Bbs();
+							bbs.setBbsID(rs.getInt(1));
+							bbs.setBbsTitle(rs.getString(2));
+							bbs.setUserID(rs.getString(3));
+							bbs.setBbsDate(rs.getString(4));
+							bbs.setBbsContent(rs.getString(5));
+							bbs.setBbsAvailable(rs.getInt(6));
+							bbs.setBbsCategory(rs.getString(7));
+							list.add(bbs);
+						}
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					return list;
+				}
+				
+				public boolean searchedNextPage(int pageNumber,String searchWord) {
+					
+					try {
+						if(getSearchedNext(searchWord)>(pageNumber)*10) {
+							return true;
+						} else {
+							return false;
+						}
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					return false;
+				}
+				//카테고리에 따른 목록을 getategoryList 로 특정한 리스트에 담아 반환해주는 ArrayList<Bbs>함수 생성
+				public ArrayList<Bbs> getcategoryList(int pageNumber, String category) {
+					//bbsID가 특정한 숫자보다 작을때를 범위로 잡아주고, Available이 1인 것만 or 내림차순으로 10개까지만 가져오도록 해주는 SQL문장을 넣어준다.
+					String SQL = "SELECT * FROM BBS WHERE bbsID < ? AND bbsAvailable = 1 AND bbsCategory = ? ORDER BY bbsID DESC LIMIT 10";
+					//Bbs라는 클래스에서 나오는 인스턴스를 보관할 수 있는 list를 하나만들어서 new ArrayList<Bbs>();를 담아준다.
+					ArrayList<Bbs> list = new ArrayList<Bbs>();
+					try { 
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						//Next같은 경우는 그다음에 작성될 글의 번호를 얘기한다. 현재 만약 게시글이 5개 일때 Next는 6이 나올텐데
+						//결과적으로 6이라는 값이 담기게 하기위한 함수. setInt(쿼리문 ?에 들어갈 값.)
+						pstmt.setInt(1, getNext() - (pageNumber-1)*10);
+						pstmt.setString(2, category);
+						//값6   pageN는 1 그럼 결국 0이 되고, 6을 반환한다. 쿼리문 내에서는 6보다 작은 값을 가져오게 되면, 현재 db내에 있는
+						//글의 내용을 전부 반환하게 된다.
+						rs = pstmt.executeQuery();
+						//결과가 나올때마다,
+						while(rs.next()) {
+							//bbs인스턴스를 만들어서
+							Bbs bbs = new Bbs();
+							//만든 bbs인스턴스안에 rs에서 실행한 쿼리문의 데이터를 다 담아서
+							bbs.setBbsID(rs.getInt(1));
+							bbs.setBbsTitle(rs.getString(2));
+							bbs.setUserID(rs.getString(3));
+							bbs.setBbsDate(rs.getString(4));
+							bbs.setBbsContent(rs.getString(5));
+							//BBS에 담긴 모든 속성을 다빼오기 때문에 각각 다 데이터를 담아서.
+							bbs.setBbsAvailable(rs.getInt(6));
+							bbs.setBbsCategory(rs.getString(7));
+							//해당 리스트를 만든 bbs인스턴스에 담아서 반환 한다.
+							list.add(bbs);
+						}
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					//10개 뽑아온 게시글 리스트를 출력한다.
+					return list;
+				}
 	 }

@@ -1,38 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
-<%@ page import="bbs.Bbs" %>
-<%@ page import="java.util.ArrayList" %>
-
+	pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter"%>
+<%@ page import="bbs.BbsDAO"%>
+<%@ page import="bbs.Bbs"%>
+<%@ page import="java.util.ArrayList"%>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
-<meta name="viewport" content="width=device-width" , inital-scale="1">
-<!--link 태그를 이용해서, stylesheet를 참조선언 해주고, 링크로 css폴더안에 있는 bootstrap.css를 사용해 준다고 명시해준다. jSP내의 디자인 담당-->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width" initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/custom.css">
-<title>독서실 관리</title>
+<title>JSP JSW 게시판 웹사이트</title>
 <style type="text/css">
-	a, a:hover {
-		color: #000000;
-		text-decoration: none;
-	}
+a, a:hover {
+	color: #000000;
+	text-decoration: none;
+}
 </style>
 </head>
 <body>
 	<%
 		String userID = null;
-		if(session.getAttribute("userID")!=null){
+		if(session.getAttribute("userID") != null) {
 			userID = (String) session.getAttribute("userID");
 		}
-		int pageNumber = 1;
+		int pageNumber =1;
 		if(request.getParameter("pageNumber")!=null){
-			pageNumber =Integer.parseInt(request.getParameter("pageNumber"));
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+			System.out.println("pageNumber="+pageNumber);
+		}
+		
+		String searchWord = null;
+		if(request.getParameter("searchWord")!=null){
+			searchWord = (String) request.getParameter("searchWord");
+			System.out.println("searchword from parameter is :" + searchWord);
+		}
+		if(session.getAttribute("searchWord")!=null){
+			searchWord = (String) session.getAttribute("searchWord");
+			System.out.println("searchword from session is :" + searchWord);
 		}
 	%>
-	<!-- 네비게이션 구현 네비게이션이라는 것은 하나의 웹사이트의 전반적인 구성을 보여주는 역할 -->
+<!-- 네비게이션 구현 네비게이션이라는 것은 하나의 웹사이트의 전반적인 구성을 보여주는 역할 -->
 	<nav class="navbar navbar-default">
 		<!-- header부분을 먼저 구현해 주는데 홈페이지의 로고같은것을 담는 영역이라고 할 수 있다. -->
 		<div class="navbar-header">
@@ -126,7 +135,7 @@
 		</div>
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>
-		<div class="panel">
+			<div class="panel">
         	<h4>카테고리 선택</h4>
         		<a href="categorybbs.jsp?category=기술" type="button">기술</a>
         		<a href="categorybbs.jsp?category=사업화" type="button">사업화</a>
@@ -134,8 +143,8 @@
         		<a href="categorybbs.jsp?category=특허" type="button">특허</a>
             </div><br>
 	<div class="container">
-		 <div class="row">
-		 <form method="post" action="searchedBbs.jsp">
+		<div class="row">
+		<form method="post" action="searchedBbs.jsp">
 			<div class="col-lg-4">
 				<input type="text" class="form-control pull-right" placeholder="Search" name="searchWord" />
 				</div>
@@ -144,70 +153,76 @@
 				</span>
 				</button>
 			</form>
-		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
-		 		<thead>
-		 			<tr>
-		 				<th	style="background-color: #eeeeee; text-align: center;">번호</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">카테고리</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">제목</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">작성자</th>
-		 				<th	style="background-color: #eeeeee; text-align: center;">작성일</th>
-		 			</tr>
-		 		</thead>
-		 		<tbody>
-		 		
-		 			<%
-                	//게시글을 담을 인스턴스
-                    BbsDAO bbsDAO = new BbsDAO();
-                	//list 생성 그 값은 현재의 페이지에서 가져온 리스트 게시글목록
-                    ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
-                    //가져온 목록을 하나씩 출력하도록 선언한다..
-                	for(int i = 0; i < list.size(); i++)
-                    {
-		 			%>
-		 			<tr>	
-                    	<!-- 현재의 게시글에 대한 정보를 하나씩 데이터를 데이터베이스에서 불러와서 보여준다. -->
-                        <td><%=list.get(i).getBbsID() %></td>
-                        <!-- 카테고리를 보여준다. -->
+			<table class="table table-striped"
+				style="text-align: center; border: 1px solid #dddddd">
+				<thead>
+					<!-- <div>
+						<div class=" col-lg-4">
+							<input type="text" class="form-control pull-right" placeholder="Search" id="txtSearch" />
+						</div>
+						<button class="btn btn-primary" type="submit">
+							<span class="glyphicon glyphicon-search"></span>
+							<a href="searchedBbs.jsp"></a>
+						</button>
+					</div> -->
+					<tr>
+						<th style="background-color: #eeeeee; text-align: center;">번호</th>
+						<th style="background-color: #eeeeee; text-align: center;">카테고리</th>
+						<th style="background-color: #eeeeee; text-align: center;">제목</th>
+						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
+						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+						BbsDAO bbsDAO = new BbsDAO(); 
+						//System.out.println("here before getlist");
+						ArrayList<Bbs> list = bbsDAO.getSearchedList(pageNumber,searchWord);
+						//System.out.println("here after getlist" + list.get(0).getBbsDate().substring(0,11));
+						for(int i=0;i<list.size();i++){
+					%>
+					<tr>
+						<td><%=list.get(i).getBbsID()%></td>
                         <td><%=list.get(i).getBbsCategory() %></td>
-                        <!-- 제목을 눌렀을때는 해당 게시글의 내용을 보여주는 페이지로 이동해야하기때문에
-                         view.jsp페이지로 해당 게시글번호를 매개변수로 보내서 처리한다. href="주소?변수명 = 값! 이런식으로 처리를 해준다.-->
-                        <td><a href="view.jsp?bbsID=<%=list.get(i).getBbsID()%>"><%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n","<br>") %></a></td>
-                        <td><%=list.get(i).getUserID() %></td>
-                        <!--날짜 데이터를 가져오는것은 substring(index,index) 함수는 DB내부에서 필요한 정보만 잘라서 들고오게 해 주는 함수-->
-                        <td><%=list.get(i).getBbsDate().substring(0,11) + list.get(i).getBbsDate().substring(11, 13) + "시" 
-                        + list.get(i).getBbsDate().substring(14,16) + "분" %></td>
-                    </tr>
-		 			<%
-		 				}
-		 			%>
-		 		
-		 		</tbody>
-		 	</table>
-		 	            <%
-            	//테이블 밑에 이전 버튼과 다음 버튼을 구현해 주는 부분
-                if(pageNumber != 1) {
-            %>
-            	<!--페이지넘버가 1이 아니면 전부다 2페이지 이상이기 때문에 pageN에서 1을뺀값을 넣어서 게시판
-            	 메인화면으로 이동하게 한다. class내부 에는 화살표모양으로 버튼이 생기게 하는 소스작성 아마 부트스트랩 기능인듯.-->
-                <a href="bbs.jsp?pageNumber=<%=pageNumber - 1 %>" class="btn btn-success btn-arrow-left">이전</a>
-            <%
-            	//BbsDAO에서 만들었던 함수를 이용해서, 다음페이지가 존재 할 경우
-                } if (bbsDAO.nextPage(pageNumber + 1)) {
-            %>
-            	<!-- a태그를 이용해서 다음페이지로 넘어 갈 수있는 버튼을 만들어 준다. -->
-                <a href="bbs.jsp?pageNumber=<%=pageNumber + 1 %>" class="btn btn-success btn-arrow-left">다음</a>
-            <%
-                }
-            %>
-		 	<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
-		 </div>
-	</div>
+						<td><a href="view.jsp?bbsID=<%=list.get(i).getBbsID()%>"><%=list.get(i).getBbsTitle().replaceAll(" ","&nbsp;").replaceAll("<","&lt;").replaceAll("<","&gt;").replaceAll("\n","<br>")%></a></td>
+						<td><%= list.get(i).getUserID()%></td>
+						<td><%=	list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11,13) + "시" + list.get(i).getBbsDate().substring(14,16) + "분"%></td>
+					</tr>
+					<% 
+					
+						}
+					
+					%>
 
-	
-	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<!--js폴더 안에있는 bootstrap.js를 사용선언  -->
+				</tbody>
+			</table>
+
+				<tr>
+				
+					<td class = "pull-left">
+					
+					
+					
+						<% 
+						if(pageNumber != 1) {
+							session.setAttribute("searchWord",searchWord);
+					%> <a href="searchedBbs.jsp?pageNumber=<%=pageNumber-1%>"
+								class="btn btn-success btn-arrow-left">이전</a> <%		
+						} if(bbsDAO.searchedNextPage(pageNumber,searchWord)) {
+							session.setAttribute("searchWord",searchWord);
+					%> <a href="searchedBbs.jsp?pageNumber=<%=pageNumber+1%>"
+								class="btn btn-success btn-arrow-right">다음</a> <% 
+						}
+					%>
+					</td>
+					
+					<td><a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+					</td>
+				</tr>
+			
+		</div>
+	</div>
+	<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 </body>
 </html>

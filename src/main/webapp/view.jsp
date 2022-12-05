@@ -5,6 +5,9 @@
 <%@ page import="bbs.Bbs"%>
 <!-- db접근객체 가져오기 -->
 <%@ page import="bbs.BbsDAO"%>
+<%@ page import="reply.Reply" %>
+<%@ page import="reply.ReplyDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,6 +33,10 @@
 		if (request.getParameter("bbsID") != null) {
 			//파라미터는 항상 정수형으로 바꿔주는 parseInt를 사용해야 한다. 다음과 같이 정수형으로 변환시켜준다.
 			bbsID = Integer.parseInt(request.getParameter("bbsID"));
+		}
+		int pageNumber = 1;
+		if(request.getParameter("pageNumber") != null) {
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
 		//받아온 bbsID가 0이면 유효하지 않은 글이라고 넣어준다.
 		if (bbsID == 0) {
@@ -104,6 +111,7 @@
 					data-toggle="dropdown" role="button" aria-haspopup="true"
 					aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
+					<li><a href="profile.jsp">프로필</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
@@ -153,6 +161,46 @@
 						</tr>
 					</tbody>
 				</table>
+				
+				<form method="post" action="replyAction.jsp?bbsID=<%= bbsID %>">
+					<table class="table table-striped"
+						style="text-align: center; border: 1px solid #dddddd">
+						<%-- 홀,짝 행 구분 --%>
+						<thead>
+							<tr>
+								<th colspan="3"
+									style="background-color: #eeeeeee; text-align: center;">댓글</th>
+							</tr>
+						</thead>
+						<tbody>
+						
+							<%
+								ReplyDAO replyDAO=new ReplyDAO();
+								ArrayList<Reply> list=replyDAO.getList(bbsID, pageNumber);
+								for(int i=list.size()-1;i>=0;i--){
+								
+							%>
+	
+							<tr>
+								<td style="text-align: left;"><%= list.get(i).getReplyContent() %></td>
+								<td style="text-align: right;"><%= list.get(i).getUserID() %>
+								<a href="update.jsp?bbsID=<%= bbsID %>" class="btn">수정</a>
+								<a href="update.jsp?bbsID=<%= bbsID %>" class="btn ">삭제</a>
+								</td>
+							</tr>
+						
+							<%
+									}
+							%>
+							<td><textarea type="text" class="form-control"
+									placeholder="댓글을 입력하세요." name="replyContent" maxlength="2048"></textarea></td>
+							<td style="text-align: left; "></td>
+						
+						</tbody>
+					</table>
+					<input type="submit" class="btn" value="댓글입력">
+				</form>
+				<br>
 				<!-- 목록으로 돌아갈 수 있는 버튼을 테이블 외부에서 작성해준다. -->	
 				<a href = "bbs.jsp" class="btn btn-primary">목록</a>
 				
@@ -166,7 +214,6 @@
 						<a onclick="return confirm('정말 삭제하시겠습니까?')" href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">삭제</a>
 				<%					
 					}
-
 				%>
 		</div>
 	</div>

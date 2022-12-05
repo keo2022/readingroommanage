@@ -14,6 +14,7 @@
 <jsp:useBean id="bbs" class="bbs.Bbs" scope="page" />
 <!-- 하나의 게시글 인스턴스 구현 -->
 <jsp:setProperty name="bbs" property="bbsTitle" />
+<jsp:setProperty name="bbs" property="bbsCategory" />
 <jsp:setProperty name="bbs" property="bbsContent" />
 <%
 	System.out.println(bbs);
@@ -52,7 +53,7 @@
 				//실제로 데이터 베이스에 등록을 해준다 BbsDAO 인스턴스를 만들고,
 				BbsDAO BbsDAO = new BbsDAO();
 				//write함수를 실행해서 실제로 게시글을 작성 할 수 있게한다. 함수(차례대로 매개변수를 넣어준다.) 이러면 아주 간단하게 작동한다.
-				int result = BbsDAO.write(bbs.getBbsTitle(), userID, bbs.getBbsContent());
+				int result = BbsDAO.write(bbs.getBbsTitle(), userID, bbs.getBbsContent(), bbs.getBbsCategory());
 				//만약에 함수에 반환된 값이 -1라면 디비오류 발생이니까
 				if (result == -1) {
 					//실패띄워줌

@@ -358,8 +358,8 @@ a:active, a:hover {
 					<div style="  display: flex;
 								  justify-content: center;
 								  align-items: center;">
-					총 공부 시간 : <%= detailstudytime %> &nbsp; 휴식 시간 : <%=detailbreaktime %><br>
-					시작 시간 : <%= detailstarttime %> &nbsp; 종료 시간 : <%= detailendtime %>
+					<h2>총 공부 시간</h2> : <%= detailstudytime %> &nbsp; <h2>휴식 시간</h2>  : <%=detailbreaktime %> <br>
+					<h2>시작 시간</h2> : <%= detailstarttime %> &nbsp; <h2>종료 시간</h2> : <%= detailendtime %>
 					</div>
 					<%
 						}

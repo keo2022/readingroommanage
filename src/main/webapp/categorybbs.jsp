@@ -23,6 +23,7 @@
 </head>
 <body>
 	<%
+		String category = request.getParameter("category");	
 		String userID = null;
 		if(session.getAttribute("userID")!=null){
 			userID = (String) session.getAttribute("userID");
@@ -125,25 +126,17 @@
 			%>	
 		</div>
 		<!-- 네비게이션 바 구성 끝 -->
-	</nav>
-		<div class="panel">
+	</nav>	
+	<div class="panel">
         	<h4>카테고리 선택</h4>
         		<a href="categorybbs.jsp?category=기술" type="button">기술</a>
         		<a href="categorybbs.jsp?category=사업화" type="button">사업화</a>
         		<a href="categorybbs.jsp?category=수출입" type="button">수출입</a>
         		<a href="categorybbs.jsp?category=특허" type="button">특허</a>
             </div><br>
+	
 	<div class="container">
 		 <div class="row">
-		 <form method="post" action="searchedBbs.jsp">
-			<div class="col-lg-4">
-				<input type="text" class="form-control pull-right" placeholder="Search" name="searchWord" />
-				</div>
-				<button class="btn btn-primary" type="submit" >
-				<span class="glyphicon glyphicon-search">
-				</span>
-				</button>
-			</form>
 		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 		 		<thead>
 		 			<tr>
@@ -156,11 +149,11 @@
 		 		</thead>
 		 		<tbody>
 		 		
-		 			<%
+					<%
                 	//게시글을 담을 인스턴스
                     BbsDAO bbsDAO = new BbsDAO();
                 	//list 생성 그 값은 현재의 페이지에서 가져온 리스트 게시글목록
-                    ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+                    ArrayList<Bbs> list = bbsDAO.getcategoryList(pageNumber, category);
                     //가져온 목록을 하나씩 출력하도록 선언한다..
                 	for(int i = 0; i < list.size(); i++)
                     {
@@ -180,8 +173,9 @@
                     </tr>
 		 			<%
 		 				}
-		 			%>
-		 		
+		 			%> 
+		 			
+		 			
 		 		</tbody>
 		 	</table>
 		 	            <%
@@ -190,13 +184,13 @@
             %>
             	<!--페이지넘버가 1이 아니면 전부다 2페이지 이상이기 때문에 pageN에서 1을뺀값을 넣어서 게시판
             	 메인화면으로 이동하게 한다. class내부 에는 화살표모양으로 버튼이 생기게 하는 소스작성 아마 부트스트랩 기능인듯.-->
-                <a href="bbs.jsp?pageNumber=<%=pageNumber - 1 %>" class="btn btn-success btn-arrow-left">이전</a>
+                <a href="categorybbs.jsp?pageNumber=<%=pageNumber - 1 %>" class="btn btn-success btn-arrow-left">이전</a>
             <%
             	//BbsDAO에서 만들었던 함수를 이용해서, 다음페이지가 존재 할 경우
                 } if (bbsDAO.nextPage(pageNumber + 1)) {
             %>
             	<!-- a태그를 이용해서 다음페이지로 넘어 갈 수있는 버튼을 만들어 준다. -->
-                <a href="bbs.jsp?pageNumber=<%=pageNumber + 1 %>" class="btn btn-success btn-arrow-left">다음</a>
+                <a href="categorybbs.jsp?pageNumber=<%=pageNumber + 1 %>" class="btn btn-success btn-arrow-left">다음</a>
             <%
                 }
             %>
