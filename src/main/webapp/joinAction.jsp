@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <!-- 앞서 만들었던 User.DAO의 객체를 사용하기위해 선언 -->
 <%@ page import="user.UserDAO" %>
+<%@ page import="time.TimeDAO" %>
 <!-- 자바스크립트 문장을 작성 하기위해 사용하는 내부라이브러리? -->
 <%@ page import="java.io.PrintWriter" %>
 <!-- 건너오는 모든 데이터를 UTF-8로 받기위해 가져오는것 -->
@@ -23,7 +24,7 @@
 <title>JSP Web Site</title>
 </head>
 <body>
-	<%
+	<% 
 		String userID = null;
 	if (session.getAttribute("userID") != null) {
 		userID = (String) session.getAttribute("userID");
@@ -69,6 +70,10 @@
 			script.println("</script>");
 		}
 	}
+	String joineduserID = request.getParameter("userID"); 
+	//StudytimeDAO인스턴스 생성
+	TimeDAO timeDAO = new TimeDAO();
+	int insertstudytime = timeDAO.firstjoin(joineduserID);
 	%>
 </body>
 </html>

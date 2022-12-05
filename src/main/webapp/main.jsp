@@ -1,5 +1,15 @@
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.time.format.DateTimeFormatter" %>
+<%@page import="java.time.temporal.ChronoUnit" %>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- 앞서 만들었던 Time.DAO의 객체를 사용하기위해 선언 -->
+<%@ page import="time.Time" %>
+<%@ page import="time.TimeDAO" %>
+<%@ page import="studytime.Studytime" %>
+<%@ page import="studytime.StudytimeDAO" %>
 <%@ page import="java.io.PrintWriter" %>
 <!-- 22-11-06 캘린더java -->
 <%@page import="java.util.Calendar"%>
@@ -77,6 +87,7 @@ a:active, a:hover {
 	width: 60%;
 	margin: 30px auto;
 }
+
 .calendar .title{
 	height: 37px;
 	line-height: 37px;
@@ -94,9 +105,12 @@ a:active, a:hover {
 
 .calendar table thead tr:first-child{
 	background: #f6f6f6;
+	
 }
 
 .calendar table td{
+	width: 350px;
+	height: 120px;
 	padding: 10px;
 	text-align: center;
 	border: 1px solid #ccc;
@@ -178,7 +192,10 @@ a:active, a:hover {
 						<li><a href="login.jsp">로그인</a></li>
 					</ul>
 				</li>
-			</ul>		
+			</ul>
+					</div>
+		<!-- 네비게이션 바 구성 끝 -->
+	</nav>		
 			<% 
 				} else if(userID.equals("1111")) {
 			%>
@@ -199,9 +216,13 @@ a:active, a:hover {
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
-			</ul>	
+			</ul>
+					</div>
+		<!-- 네비게이션 바 구성 끝 -->
+	</nav>	
 			<%
 				}else {
+
 			%>
 					<!-- 원소를 하나 구현해 준다. 네비게이션 우측 슬라이드메뉴 구현  -->
 						<ul class="nav navbar-nav navbar-right">
@@ -220,70 +241,138 @@ a:active, a:hover {
 							</ul>
 						</li>
 					</ul>	
-					<%
-						}
-					%>	
-		</div>
+							</div>
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>
-	
-	<!-- 22-11-06 캘린더html -->
-	<div class="calendar">
-	<div class="title">
-		<a href="main.jsp?year=<%=year%>&month=<%=month-1%>">&lt;</a>
-		<label><%=year%>년 <%=month%>월</label>
-		<a href="main.jsp?year=<%=year%>&month=<%=month+1%>">&gt;</a>
-	</div>
-	
-	<table>
-		<thead>
-			<tr>
-				<td>일</td>
-				<td>월</td>
-				<td>화</td>
-				<td>수</td>
-				<td>목</td>
-				<td>금</td>
-				<td>토</td>
-			</tr>
-		</thead>
-		<tbody>
-<%
-			// 1일 앞 달
-			Calendar preCal = (Calendar)cal.clone();
-			preCal.add(Calendar.DATE, -(week-1));
-			int preDate = preCal.get(Calendar.DATE);
-			
-			out.print("<tr>");
-			// 1일 앞 부분
-			for(int i=1; i<week; i++) {
-				//out.print("<td>&nbsp;</td>");
-				out.print("<td class='gray'>"+(preDate++)+"</td>");
-			}
-			
-			// 1일부터 말일까지 출력
-			int lastDay = cal.getActualMaximum(Calendar.DATE);
-			String cls;
-			for(int i=1; i<=lastDay; i++) {
-				cls = year==ty && month==tm && i==td ? "today":"";
 				
-				out.print("<td class='"+cls+"'>"+i+"<br><br>"+2+"</td>");
-				if(lastDay != i && (++week)%7 == 1) {
-					out.print("</tr><tr>");
-				}
-			}
-			
-			// 마지막 주 마지막 일자 다음 처리
-			int n = 1;
-			for(int i = (week-1)%7; i<6; i++) {
-				// out.print("<td>&nbsp;</td>");
-				out.print("<td class='gray'>"+(n++)+"</td>");
-			}
-			out.print("</tr>");
-%>		
-		</tbody>
-	</table>
-	<!-- 22-11-06 캘린더html -->
+					<!-- 캘린더 -->
+					<div class="calendar">
+					<div class="title">
+						<a href="main.jsp?year=<%=year%>&month=<%=month-1%>">&lt;</a>
+						<label><%=year%>년 <%=month%>월</label>
+						<a href="main.jsp?year=<%=year%>&month=<%=month+1%>">&gt;</a>
+					</div>
+					
+					<table>
+						<thead>
+							<tr>
+								<td>일</td>
+								<td>월</td>
+								<td>화</td>
+								<td>수</td>
+								<td>목</td>
+								<td>금</td>
+								<td>토</td>
+							</tr>
+						</thead>
+						<tbody>
+				<%
+				
+				StudytimeDAO studytimeDAO = new StudytimeDAO();
+				
+				
+				
+					// 1일 앞 달
+					Calendar preCal = (Calendar)cal.clone();
+					preCal.add(Calendar.DATE, -(week-1));
+					int preDate = preCal.get(Calendar.DATE);
+					
+					out.print("<tr>");
+					// 1일 앞 부분
+					for(int i=1; i<week; i++) {
+						//out.print("<td>&nbsp;</td>");
+						out.print("<td class='gray'>"+(preDate++)+"</td>");
+					}
+							
+					// 1일부터 말일까지 출력
+					int lastDay = cal.getActualMaximum(Calendar.DATE);
+					String cls;
+					String result;
+				
+					for(int i=1; i<=lastDay; i++) {
+						cls = year==ty && month==tm && i==td ? "today":"";
+						result = null;
+						result = studytimeDAO.viewmain(userID, year, month, i);
+						//out.print("<a href=main.jsp?detail='"+i+"'>");
+						out.print("<td class='"+cls+"' onClick=\"location.href='main.jsp?detail="+i+"'\">"+i+"<br>"+result+"</td>");
+						//out.print("</a>");
+						if(lastDay != i && (++week)%7 == 1) {
+							out.print("</tr><tr>");
+						}
+					}
+				
+							
+					// 마지막 주 마지막 일자 다음 처리
+					int n = 1;
+					for(int i = (week-1)%7; i<6; i++) {
+						// out.print("<td>&nbsp;</td>");
+						out.print("<td class='gray'>"+(n++)+"</td>");
+					}
+					out.print("</tr>");
+				%>		
+						</tbody>
+					</table>
+					<!-- 캘린더 -->
+					
+					
+					<% 
+						}
+					//자동 종료를 위한 함수
+					TimeDAO timeDAO = new TimeDAO();
+					String limiteduserID = timeDAO.limiteduser();
+					int autoend = timeDAO.autoend();
+					if(autoend == 1){
+						StudytimeDAO studytimeDAO = new StudytimeDAO();
+						//시작시간
+						String starttime = timeDAO.starttime(limiteduserID);
+						//시간차이
+						String timediff = timeDAO.timediff(limiteduserID);
+						//오늘 처음 공부하는건지 확인
+						String firststudy = studytimeDAO.firststudy(limiteduserID, starttime);
+						//기존 공부시간 가져오는 함수
+						String existing = studytimeDAO.existing(limiteduserID, starttime);
+						
+						
+						if(firststudy.equals("4") || firststudy == null){
+						//오늘 처음 시작했으면 시작시간기준으로 연,월,일 정하고 시간차이를 집어넣는다.
+						int result1 = studytimeDAO.incalcstudytime(limiteduserID, starttime, timediff);
+						}
+						else {
+						//이미 공부시간이 있기때문에 기존 시간(existing)을 가져와서 새로 가져온 시간(timediff)과 더한다.
+						int result2 = studytimeDAO.upcalcstudytime(limiteduserID, starttime, timediff, existing);
+						
+						}
+					}
+					//상세화면
+					
+					int detail = 1;
+					if(request.getParameter("detail")!=null){
+					TimeDAO detailtimeDAO = new TimeDAO();
+					StudytimeDAO detailstudytimeDAO = new StudytimeDAO();
+					detail = Integer.parseInt(request.getParameter("detail"));
+					String detailstudytime = detailstudytimeDAO.viewmain(userID, year, month, detail);
+					String detailstarttime = detailstudytimeDAO.daystart(userID, year, month, detail);
+					String detailendtime = detailstudytimeDAO.dayend(userID, year, month, detail);
+					String detailbreaktime = detailstudytimeDAO.breaktime(userID, year, month, detail);
+					%>
+					<div style="  display: flex;
+								  justify-content: center;
+								  align-items: center;">
+					총 공부 시간 : <%= detailstudytime %> &nbsp; 휴식 시간 : <%=detailbreaktime %><br>
+					시작 시간 : <%= detailstarttime %> &nbsp; 종료 시간 : <%= detailendtime %>
+					</div>
+					<%
+						}
+						else{
+					%>
+					
+					<% 
+						}
+					%>
+					
+	
+	
+	
 
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

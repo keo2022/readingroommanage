@@ -36,7 +36,7 @@ public class UserDAO {
 		}
 	}
 
-	//위에꺼는 실제로 mysql에 접속을 하게 해주는 부분이고, 이제 실제로 로그인을 시도하는 하나의 함수 구현 userID,userPassword를 입력 받아서 실행한다.
+	//실제로 로그인을 시도하는 하나의 함수 구현 userID,userPassword를 입력 받아서 실행한다.
 	public int login(String userID, String userPassword) {
 		//이제 입력받은 userID 와 PW가 일치하는지 확인을 하기위해서 db내에서 userID 값에 대한 PW를 조회하는 쿼리를 넣어준다. *1.해킹방지를 위해 중간에 ?를 넣어놓고
 		String SQL = "SELECT userPassword FROM USER WHERE userID = ?";

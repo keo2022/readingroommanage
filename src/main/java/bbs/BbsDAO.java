@@ -214,4 +214,5 @@ public class BbsDAO {
 					//나머지는 디비오류
 					return -1;
 				}
+				
 	 }

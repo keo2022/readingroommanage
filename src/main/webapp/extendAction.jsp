@@ -29,20 +29,19 @@
 			script.println("window.close();");
 			script.println("</script>");
 		}
-				
+		//원래 제한시간 가져오는 함수
+		TimeDAO timeDAOend = new TimeDAO();
+		String time = timeDAOend.getlimit(userID);	
 		//TimeDAO인스턴스 생성
 		TimeDAO timeDAO = new TimeDAO();
-		String seat = null;
-		seat = request.getParameter("seat");
-		String myseat = timeDAO.myseat(userID);
-		if(myseat == null ){
-		int result = timeDAO.start(userID, seat);
+		//extend함수로 원래 제한시간에 +2시간 추가
+		int result = timeDAO.extend(userID, time);
 		//start함수에서 return값이 1이라면
 		if (result == 1){
 			PrintWriter script = response.getWriter();
 			//println으로 접근해서 스크립트 문장을 유동적으로 실행 할 수 있게한다.
 			script.println("<script>");
-			script.println("alert('공부를 시작합니다.');");
+			script.println("alert('시간을 연장합니다.');");
 			//데이터 삽입 후 팝업창을 닫아준다.
 			script.println("window.close();");
 			//스크립트 태그를 닫아준다.
@@ -62,7 +61,7 @@
 		else if(result == -1){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert('이미 다른 좌석을 사용하고 있습니다.');");
+			script.println("alert('공부중이 아닙니다.');");
 			script.println("history.back()");
 			script.println("</script>");
 		}
@@ -71,14 +70,6 @@
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('데이터베이스 오류가 발생했습니다.');");
-			script.println("history.back()");
-			script.println("</script>");
-		}
-	}
-		else{
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert('이미 다른 좌석을 사용하고 있습니다.');");
 			script.println("history.back()");
 			script.println("</script>");
 		}

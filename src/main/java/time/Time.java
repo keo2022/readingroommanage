@@ -2,8 +2,10 @@ package time;
 
 public class Time {
 	private String userID;
-	private String Seat;
-	private String Time;
+	private String seat;
+	private String start;
+	private String end;
+	private String timelimit;
 	
 	public String getUserID() {
 		return userID;
@@ -12,15 +14,28 @@ public class Time {
 		this.userID = userID;
 	}
 	public String getSeat() {
-		return Seat;
+		return seat;
 	}
 	public void setSeat(String seat) {
-		Seat = seat;
+		this.seat = seat;
 	}
-	public String getTime() {
-		return Time;
+	public String getStart() {
+		return start;
 	}
-	public void setTime(String time) {
-		Time = time;
+	public void setStart(String start) {
+		this.start = start;
 	}
+	public String getEnd() {
+		return end;
+	}
+	public void setEnd(String end) {
+		this.end = end;
+	}
+	public String getTimelimit() {
+		return timelimit;
+	}
+	public void setTimelimit(String timelimit) {
+		this.timelimit = timelimit;
+	}
+	
 }

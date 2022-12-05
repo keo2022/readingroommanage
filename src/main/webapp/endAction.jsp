@@ -4,6 +4,8 @@
 <!-- 앞서 만들었던 Time.DAO의 객체를 사용하기위해 선언 -->
 <%@ page import="time.Time" %>
 <%@ page import="time.TimeDAO" %>
+<%@ page import="studytime.Studytime" %>
+<%@ page import="studytime.StudytimeDAO" %>
 <!-- 자바스크립트 문장을 작성 하기위해 사용하는 내부라이브러리? -->
 <%@ page import="java.io.PrintWriter" %>
 <!-- 건너오는 모든 데이터를 UTF-8로 받기위해 가져오는것 -->
@@ -30,47 +32,75 @@
 			script.println("</script>");
 			//로그인이 된 사람들은 이쪽으로 넘어가게 해준다.
 		}
+			//TimeDAO2인스턴스 생성
+			TimeDAO timeDAO = new TimeDAO();
+			int result = timeDAO.end(userID);
+			//start함수에서 return값이 1이라면
+			if (result == 1){
+				PrintWriter script = response.getWriter();
+				//println으로 접근해서 스크립트 문장을 유동적으로 실행 할 수 있게한다.
+				script.println("<script>");
+				script.println("alert('공부를 종료합니다.');");
+				//데이터 제거 후 팝업창을 닫아준다.
+				script.println("window.close();");
+				//스크립트 태그를 닫아준다.
+				script.println("</script>");
 				
-		//TimeDAO인스턴스 생성
-		TimeDAO timeDAO = new TimeDAO();
-		int result = timeDAO.end(userID);
-		//start함수에서 return값이 1이라면
-		if (result == 1){
-			PrintWriter script = response.getWriter();
-			//println으로 접근해서 스크립트 문장을 유동적으로 실행 할 수 있게한다.
-			script.println("<script>");
-			script.println("alert('공부를 종료합니다.');");
-			//데이터 제거 후 팝업창을 닫아준다.
-			script.println("window.close();");
-			//스크립트 태그를 닫아준다.
-			script.println("</script>");
-		}
-		//오류 발생
-		else if(result == 0){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			//웹페이지에 팝업을 띄워준다.
-			script.println("alert('잠시 후 다시 시도해주세요.');");
-			//이 전 페이지로 사용자를 다시 돌려보내는 함수이다.
-			script.println("history.back()");
-			script.println("</script>");
-		}
-		//오류 발생
-		else if(result == -1){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert('잠시 후 다시 시도해주세요.');");
-			script.println("history.back()");
-			script.println("</script>");
-		}
-		//db연결 잘안됬을때
-		else if(result == -2){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert('데이터베이스 오류가 발생했습니다.');");
-			script.println("history.back()");
-			script.println("</script>");
-		}
+			}
+			//오류 발생
+			else if(result == 0){
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				//웹페이지에 팝업을 띄워준다.
+				script.println("alert('잠시 후 다시 시도해주세요.');");
+				//이 전 페이지로 사용자를 다시 돌려보내는 함수이다.
+				script.println("history.back()");
+				script.println("</script>");
+			}
+			//오류 발생
+			else if(result == -1){
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("alert('잠시 후 다시 시도해주세요.');");
+				script.println("history.back()");
+				script.println("</script>");
+			}
+			//db연결 잘안됬을때
+			else if(result == -2){
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("alert('데이터베이스 오류가 발생했습니다.');");
+				script.println("history.back()");
+				script.println("</script>");
+			}
+			//StudytimeDAO인스턴스 생성
+			StudytimeDAO studytimeDAO = new StudytimeDAO();
+			
+			//시작시간
+			String starttime = timeDAO.starttime(userID);
+			//시간차이
+			String timediff = timeDAO.timediff(userID);
+			//오늘 처음 공부하는건지 확인
+			String firststudy = studytimeDAO.firststudy(userID, starttime);
+			//기존 공부시간 가져오는 함수
+			String existing = studytimeDAO.existing(userID, starttime);
+			//당일 종료시간 넣는 함수
+			int dayend = studytimeDAO.insertdayend(userID, starttime);
+			
+			
+			if(firststudy.equals("4") || firststudy == null){
+			//오늘 처음 시작했으면 시작시간기준으로 연,월,일 정하고 시간차이를 집어넣는다.
+			int result1 = studytimeDAO.incalcstudytime(userID, starttime, timediff);
+			}
+			else {
+			//이미 공부시간이 있기때문에 기존 시간(existing)을 가져와서 새로 가져온 시간(timediff)과 더한다.
+			int result2 = studytimeDAO.upcalcstudytime(userID, starttime, timediff, existing);
+			
+			}
+		
+			
+		
 		%>
+		
 </body>
 </html>

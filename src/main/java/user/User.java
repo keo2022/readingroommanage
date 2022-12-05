@@ -7,6 +7,8 @@ public class User {
 	private String userGender;
 	private String userEmail;
 	private int lockerNum;
+
+
 	private String userAvailable;
 	
 	

@@ -139,7 +139,7 @@
 		 		</thead>
 		 		<tbody>
 		 		
-		 			<%
+					<%
                 	//게시글을 담을 인스턴스
                     BbsDAO bbsDAO = new BbsDAO();
                 	//list 생성 그 값은 현재의 페이지에서 가져온 리스트 게시글목록
@@ -161,8 +161,9 @@
                     </tr>
 		 			<%
 		 				}
-		 			%>
-		 		
+		 			%> 
+		 			
+		 			
 		 		</tbody>
 		 	</table>
 		 	            <%
