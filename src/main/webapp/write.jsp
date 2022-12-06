@@ -95,7 +95,7 @@
 	</nav>
 	<div class="container">
 		 <div class="row">
-		 	<form method="post" action="writeAction.jsp">
+		 	<form method="post" action="writeAction.jsp" enctype="multipart/form-data">
 		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 		 		<thead>
 		 			<tr>
@@ -112,11 +112,18 @@
 					<!-- 장문의 글을 작성 할 수있는 textarea태그를 이용해서 Content를 입력하도록 삽입한다. -->
 						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;"></textarea></td>
 					</tr>
+					<tr>
+						<td><input type="file" name="file"></td>
+					</tr>
 				</tbody>
 			</table>
 				<!-- 사용자에게 보여지는 글쓰기 버튼을 구현 -->	
 				<input type="submit" class="btn btn-primary pull-right" value="글쓰기"/>
 			</form>
+			<!--  <form action="fileUpload.jsp" name="fileForm" method="post" enctype="multipart/form-data">
+				파일명 : <input type="file" name="uploadFile"><br>
+				<input type="submit" value="파일 업로드">
+			</form>-->
 		</div>
 	<!-- 글쓰기 화면 구현 끝 -->	
 	</div>

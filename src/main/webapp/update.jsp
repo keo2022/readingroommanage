@@ -116,6 +116,9 @@
 							<!-- 위와 동일한 이유로 작성 되어있던 내용도 불러와준다. -->
 							<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;" ><%= bbs.getBbsContent() %></textarea></td>
 						</tr>
+						<tr>
+							<td><input type="file" name="file"></td>
+						</tr>
 					</tbody>
 				</table>	
 				<input type="submit" class="btn btn-primary pull-right" value="글수정">

@@ -76,6 +76,22 @@ public class BbsDAO {
 					return -1; 
 				}
 				
+				public int getNewNext() {
+					String SQL = "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
+					try {
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						rs = pstmt.executeQuery();
+						
+						if(rs.next()) {
+							return rs.getInt(1)+1;
+						}
+						return 1;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return -1;
+				}
+				
 				//실제로 글을 작성하는 write함수 작성 Title,ID,Content를 외부에서 받아서 함수를 실행 시킨다.
 				public int write(String bbsTitle, String userID, String bbsContent) { 
 					//BBS 테이블에 들어갈 인자 6개를 ?로 선언 해준다.
