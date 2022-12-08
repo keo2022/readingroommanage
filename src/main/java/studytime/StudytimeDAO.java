@@ -142,7 +142,7 @@ public class StudytimeDAO {
 		}
 		//메인에 공부시간 보여주는 함수
 		public String viewmain(String userID, int year, int month, int day) {
-			String SQL = "SELECT studytime FROM STUDYTIME WHERE userID = ? AND year(date)= ? AND month(date)= ? AND day(date)= ? ";
+			String SQL = "SELECT DATE_FORMAT(studytime,'%H:%i') FROM STUDYTIME WHERE userID = ? AND year(date)= ? AND month(date)= ? AND day(date)= ? ";
 			try {
 				//각각 함수끼리 데이터 접근에 있어서 마찰방지용으로 내부 pstmt선언 (현재 연결된 객체를 이용해서 SQL문장을 실행 준비단계로 만들어준다.)
 				PreparedStatement pstmt = conn.prepareStatement(SQL);
@@ -164,6 +164,30 @@ public class StudytimeDAO {
 			//데이터베이스 오류
 			return ""; 
 		}
+		//detail공부시간
+				public String viewdetail(String userID, int year, int month, int day) {
+					String SQL = "SELECT studytime FROM STUDYTIME WHERE userID = ? AND year(date)= ? AND month(date)= ? AND day(date)= ? ";
+					try {
+						//각각 함수끼리 데이터 접근에 있어서 마찰방지용으로 내부 pstmt선언 (현재 연결된 객체를 이용해서 SQL문장을 실행 준비단계로 만들어준다.)
+						PreparedStatement pstmt = conn.prepareStatement(SQL);
+						//*2.쿼리 중 userID = ? 에 해당하는 부분에 입력받은 userID를 넣어주는 것이다. 그니까 바로 쿼리문으로 드가면 해킹틈 생기니까 setString으로 한번 거치고간다.
+						pstmt.setString(1, userID);
+						pstmt.setInt(2, year);
+						pstmt.setInt(3, month);
+						pstmt.setInt(4, day);
+						//rs내부에 실제로 실행했을때 나오는 결과를 가져온다
+						rs = pstmt.executeQuery();
+						//결과가 있는경우는 다음과 같이 getString 1을 해서 시간 계산값 반환
+						if(rs.next()) {
+							return rs.getString(1);
+						}
+					} catch (Exception e) {
+						//오류 발생 내용을 콘솔에 띄움
+						e.printStackTrace();
+					}
+					//데이터베이스 오류
+					return ""; 
+				}
 		//종료시간에 현재 종료시간 넣기
 		public int insertdayend(String userID, String time) {
 			String SQL = "UPDATE STUDYTIME SET dayend = ? WHERE userID = ? AND year(date)= year(?) AND month(date)= month(?) AND day(date)= day(?)";

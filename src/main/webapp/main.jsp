@@ -136,6 +136,25 @@ a:active, a:hover {
 	text-align: right;
 	font-size: 12px;
 }
+
+.detail table {
+	width: 50%;
+	height: 40px;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-left:auto; 
+    margin-right:auto;
+}
+
+.detail table th{
+	text-align: center;
+	font-size: 35px;
+}
+.detail table td{
+	height: 15px;
+	font-size: 30px;
+}
+
 </style>
 <!-- 22-11-06 캘린더css -->
 </head>
@@ -350,27 +369,40 @@ a:active, a:hover {
 					TimeDAO detailtimeDAO = new TimeDAO();
 					StudytimeDAO detailstudytimeDAO = new StudytimeDAO();
 					detail = Integer.parseInt(request.getParameter("detail"));
-					String detailstudytime = detailstudytimeDAO.viewmain(userID, year, month, detail);
+					String detailstudytime = detailstudytimeDAO.viewdetail(userID, year, month, detail);
 					String detailstarttime = detailstudytimeDAO.daystart(userID, year, month, detail);
 					String detailendtime = detailstudytimeDAO.dayend(userID, year, month, detail);
 					String detailbreaktime = detailstudytimeDAO.breaktime(userID, year, month, detail);
 					%>
-					<div style="  display: flex;
-								  justify-content: center;
-								  align-items: center;">
-					<h2>총 공부 시간</h2> : <%= detailstudytime %> &nbsp; <h2>휴식 시간</h2>  : <%=detailbreaktime %> <br>
-					<h2>시작 시간</h2> : <%= detailstarttime %> &nbsp; <h2>종료 시간</h2> : <%= detailendtime %>
-					</div>
-					<%
-						}
-						else{
-					%>
-					
-					<% 
-						}
-					%>
-					
-	
+				<br>
+				<div style="font-size: 50px; text-align: center;"><%=month %>월 <%=detail %>일</div>
+				<br>
+				<div class=detail>
+				<table>
+				<thead>
+				<tr>
+				<th>공부 시간</th><th>휴식 시간</th>
+				</tr>
+				</thead>
+				<tr>
+				<td><%= detailstudytime %></td><td><%= detailbreaktime %></td>
+				</tr>
+				</table>
+				<table>
+				<thead>
+				<tr>
+				<th>시작 시간</th><th>종료 시간</th>
+				</tr>
+				</thead>
+				<tr>
+				<td><%= detailstarttime %></td><td><%= detailendtime %></td>
+				</tr>
+				</table>
+				</div>
+				<br>
+			
+									
+	<%} %>
 	
 	
 

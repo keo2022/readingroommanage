@@ -82,7 +82,7 @@
 					<!--접속하기 아래에 드랍다운메뉴 생성  -->
 					<ul class="dropdown-menu">
 						<!-- li class="active" 현재 선택된 홈페이지를 표시해 주게만든다. -->
-						<li><a href="profile.jsp">프로필</a></li>
+						<li><a href="logoutAction.jsp">프로필</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
@@ -95,7 +95,7 @@
 	</nav>
 	<div class="container">
 		 <div class="row">
-		 	<form method="post" action="writeAction.jsp">
+		 	<form method="post" action="writeAction.jsp" enctype="multipart/form-data">
 		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 		 		<thead>
 		 			<tr>
@@ -108,30 +108,35 @@
 					<!-- 글 제목을 작성할 수있는 input을 삽입 해준다. -->
 						<td><input type="text" class="form-control" placeholder="글 제목" name="bbsTitle" maxlength="50"></td>
 					</tr>
-						<tr>
-					<!-- 글 제목을 작성할 수있는 input을 삽입 해준다. -->
-						 <select name="bbsCategory">
-				         <option value="">카테고리를 선택하세요.</option>
-				         <option value="기술">기술</option>
-				         <option value="특허">특허</option>
-				         <option value="사업화">사업화</option>
-				         <option value="수출입">수출입</option>
-				    	  </select>
-						</tr>
-			
 					<tr>
+					<select type="text" class="form-control" name="bbsCategory">
+					<option value="">카테고리를 선택하세요</option>
+					<option value="공지사항">공지사항</option>
+					<option value="자유">자유</option>
+					<option value="자기계발">자기개발</option>
+					<option value="질문">질문</option>
+					<option value="자료">자료</option>
+					</select>
 					<!-- 장문의 글을 작성 할 수있는 textarea태그를 이용해서 Content를 입력하도록 삽입한다. -->
+					</tr>
+					<tr>	
 						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;"></textarea></td>
+					</tr>
+					<tr>
+						<td><input type="file" name="file"></td>
 					</tr>
 				</tbody>
 			</table>
 				<!-- 사용자에게 보여지는 글쓰기 버튼을 구현 -->	
 				<input type="submit" class="btn btn-primary pull-right" value="글쓰기"/>
 			</form>
+			<!--  <form action="fileUpload.jsp" name="fileForm" method="post" enctype="multipart/form-data">
+				파일명 : <input type="file" name="uploadFile"><br>
+				<input type="submit" value="파일 업로드">
+			</form>-->
 		</div>
 	<!-- 글쓰기 화면 구현 끝 -->	
 	</div>
-
 	
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

@@ -17,6 +17,9 @@ a, a:hover {
 	color: #000000;
 	text-decoration: none;
 }
+.category{
+	margin-left:20%;
+	}
 </style>
 </head>
 <body>
@@ -135,12 +138,14 @@ a, a:hover {
 		</div>
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>
-			<div class="panel">
+			<div class="category">
         	<h4>카테고리 선택</h4>
-        		<a href="categorybbs.jsp?category=기술" type="button">기술</a>
-        		<a href="categorybbs.jsp?category=사업화" type="button">사업화</a>
-        		<a href="categorybbs.jsp?category=수출입" type="button">수출입</a>
-        		<a href="categorybbs.jsp?category=특허" type="button">특허</a>
+        		<a href="bbs.jsp?category=전체" type="button" class="btn btn-light">전체</a>
+        		<a href="bbs.jsp?category=공지사항" type="button" class="btn btn-light">공지사항</a>
+        		<a href="bbs.jsp?category=자유" type="button" class="btn btn-light">자유</a>
+        		<a href="bbs.jsp?category=자기계발" type="button" class="btn btn-light">자기계발</a>
+        		<a href="bbs.jsp?category=질문" type="button" class="btn btn-light">질문</a>
+        		<a href="bbs.jsp?category=자료" type="button" class="btn btn-light">자료</a>
             </div><br>
 	<div class="container">
 		<div class="row">
@@ -175,9 +180,17 @@ a, a:hover {
 				</thead>
 				<tbody>
 					<%
+						String category = null;
+			 			category = request.getParameter("category");
 						BbsDAO bbsDAO = new BbsDAO(); 
-						//System.out.println("here before getlist");
-						ArrayList<Bbs> list = bbsDAO.getSearchedList(pageNumber,searchWord);
+						 ArrayList<Bbs> list = null;
+		                	//list 생성 그 값은 현재의 페이지에서 가져온 리스트 게시글목록
+		                    if(category == null || category.equals("전체")){
+		                    	list = bbsDAO.getSearchedList(pageNumber,searchWord);
+		                    }
+		                	else{ 
+		                	list = bbsDAO.getSearchedcategoryList(pageNumber, searchWord, category);
+		                	}
 						//System.out.println("here after getlist" + list.get(0).getBbsDate().substring(0,11));
 						for(int i=0;i<list.size();i++){
 					%>
@@ -204,6 +217,7 @@ a, a:hover {
 					
 					
 						<% 
+						if(category == null || category.equals("전체")){
 						if(pageNumber != 1) {
 							session.setAttribute("searchWord",searchWord);
 					%> <a href="searchedBbs.jsp?pageNumber=<%=pageNumber-1%>"
@@ -213,6 +227,7 @@ a, a:hover {
 					%> <a href="searchedBbs.jsp?pageNumber=<%=pageNumber+1%>"
 								class="btn btn-success btn-arrow-right">다음</a> <% 
 						}
+					}
 					%>
 					</td>
 					

@@ -19,11 +19,14 @@
 		color: #000000;
 		text-decoration: none;
 	}
+	.category{
+	margin-left:20%;
+	}
 </style>
 </head>
 <body>
 	<%
-		String category = request.getParameter("category");	
+		String category = request.getParameter("category");
 		String userID = null;
 		if(session.getAttribute("userID")!=null){
 			userID = (String) session.getAttribute("userID");
@@ -127,16 +130,25 @@
 		</div>
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>	
-	<div class="panel">
+	<div class="category">
         	<h4>카테고리 선택</h4>
-        		<a href="categorybbs.jsp?category=기술" type="button">기술</a>
-        		<a href="categorybbs.jsp?category=사업화" type="button">사업화</a>
-        		<a href="categorybbs.jsp?category=수출입" type="button">수출입</a>
-        		<a href="categorybbs.jsp?category=특허" type="button">특허</a>
+        		<a href="categorybbs.jsp?category=기술" type="button" class="btn btn-light">기술</a>
+        		<a href="categorybbs.jsp?category=사업화" type="button" class="btn btn-light">사업화</a>
+        		<a href="categorybbs.jsp?category=수출입" type="button" class="btn btn-light">수출입</a>
+        		<a href="categorybbs.jsp?category=특허" type="button" class="btn btn-light">특허</a>
             </div><br>
 	
 	<div class="container">
 		 <div class="row">
+		 <form method="post" action="searchedBbs.jsp">
+			<div class="col-lg-4">
+				<input type="text" class="form-control pull-right" placeholder="Search" name="searchWord" />
+				</div>
+				<button class="btn btn-primary" type="submit" >
+				<span class="glyphicon glyphicon-search">
+				</span>
+				</button>
+			</form>
 		 	<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 		 		<thead>
 		 			<tr>

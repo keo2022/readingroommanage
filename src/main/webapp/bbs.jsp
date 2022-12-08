@@ -14,15 +14,44 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
 <title>독서실 관리</title>
+<script src="//code.jquery.com/jquery.min.js"></script> 
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<script src="//code.jquery.com/jquery.min.js"></script>
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <style type="text/css">
 	a, a:hover {
 		color: #000000;
 		text-decoration: none;
 	}
+	.categorysel{
+	 list-style:none;
+	}
+	.category{
+	margin-top:5%;
+	float:left;
+	width:20%;
+	}
+	.container{
+	width:60%;
+	}
+	.category a{
+	 opacity:0.5;
+	}
+	.active{
+	font-size:30px;
+	}
+	
 </style>
 </head>
 <body>
 	<%
+
+		String category = null;
+		category = request.getParameter("category");
+		
 		String userID = null;
 		if(session.getAttribute("userID")!=null){
 			userID = (String) session.getAttribute("userID");
@@ -126,13 +155,19 @@
 		</div>
 		<!-- 네비게이션 바 구성 끝 -->
 	</nav>
-		<div class="panel">
-        	<h4>카테고리 선택</h4>
-        		<a href="categorybbs.jsp?category=기술" type="button">기술</a>
-        		<a href="categorybbs.jsp?category=사업화" type="button">사업화</a>
-        		<a href="categorybbs.jsp?category=수출입" type="button">수출입</a>
-        		<a href="categorybbs.jsp?category=특허" type="button">특허</a>
-            </div><br>
+	
+		<div class="category">
+        	<ul class ="categorysel">
+        		<li><h4>카테고리 선택</h4></li>
+        		<li><a href="bbs.jsp" type="button" class="btn btn-light">전체</a></li>
+        		<li><a href="bbs.jsp?category=공지사항" type="button" class="btn btn-light">공지사항</a></li>
+        		<li><a href="bbs.jsp?category=자유" type="button" class="btn btn-light">자유</a></li>
+        		<li><a href="bbs.jsp?category=자기계발" type="button" class="btn btn-light">자기계발</a></li>
+        		<li><a href="bbs.jsp?category=질문" type="button" class="btn btn-light">질문</a></li>
+        		<li><a href="bbs.jsp?category=자료" type="button" class="btn btn-light">자료</a></li>
+        	</ul>
+            </div>
+
 	<div class="container">
 		 <div class="row">
 		 <form method="post" action="searchedBbs.jsp">
@@ -159,8 +194,14 @@
 		 			<%
                 	//게시글을 담을 인스턴스
                     BbsDAO bbsDAO = new BbsDAO();
+                    ArrayList<Bbs> list = null;
                 	//list 생성 그 값은 현재의 페이지에서 가져온 리스트 게시글목록
-                    ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+                    if(category == null || category.equals("전체")){
+                	list = bbsDAO.getList(pageNumber);
+                    }
+                	else{ 
+                	list = bbsDAO.getcategoryList(pageNumber, category);
+                	}
                     //가져온 목록을 하나씩 출력하도록 선언한다..
                 	for(int i = 0; i < list.size(); i++)
                     {
@@ -181,10 +222,11 @@
 		 			<%
 		 				}
 		 			%>
-		 		
 		 		</tbody>
 		 	</table>
-		 	            <%
+		 	
+		 	<%
+		 	if(category == null || category.equals("전체")){
             	//테이블 밑에 이전 버튼과 다음 버튼을 구현해 주는 부분
                 if(pageNumber != 1) {
             %>
@@ -199,11 +241,32 @@
                 <a href="bbs.jsp?pageNumber=<%=pageNumber + 1 %>" class="btn btn-success btn-arrow-left">다음</a>
             <%
                 }
+		 	}
             %>
 		 	<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
 		 </div>
 	</div>
+	<script>
 
+$(function () {
+
+        var url = window.location.href
+
+    	urlRegExp = new RegExp(url.replace(/\/$/, '')+ "$");  
+
+        $('a').each(function () {
+
+        if (urlRegExp.test(this.href.replace(/\/$/, ''))) {
+
+        	$(this).addClass('active');
+
+            }
+
+        });
+
+    });
+
+</script>
 	
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

@@ -3,6 +3,10 @@
 <%@ page import="bbs.BbsDAO"%>
 <%@ page import="bbs.Bbs"%>
 <%@ page import="java.io.PrintWriter"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	response.setContentType("text/html; charset=UTF-8");
+%>
 <!-- writeAction에서는 beans를 사용했는데 beans를 안쓰는게 더 편할꺼 같다고 
 동빈이 형이 마음이 변해부렀다. 왜그런지 나중에 두 페이지를 한번 비교해보자.-->
 <!DOCTYPE html>

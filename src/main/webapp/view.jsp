@@ -5,6 +5,8 @@
 <%@ page import="bbs.Bbs"%>
 <!-- db접근객체 가져오기 -->
 <%@ page import="bbs.BbsDAO"%>
+<%@ page import="file.FileDAO" %>
+<%@ page import="java.io.File" %>
 <%@ page import="reply.Reply" %>
 <%@ page import="reply.ReplyDAO" %>
 <%@ page import="java.util.ArrayList" %>
@@ -111,7 +113,6 @@
 					data-toggle="dropdown" role="button" aria-haspopup="true"
 					aria-expanded="false">회원관리<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-					<li><a href="profile.jsp">프로필</a></li>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
@@ -159,6 +160,26 @@
 							<td colspan="2" style="min-height: 200px; text-align: left;">
 							<%= bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n","<br>")%></td>
 						</tr>
+						<tr>
+							<%-- <td>파일</td>--%>
+							<td colspan="2">
+							
+							<% 
+								String directory = application.getRealPath("/upload/"+bbsID+"/");
+				
+								File targetDir = new File(directory);
+								if(!targetDir.exists()){
+									targetDir.mkdirs();
+								}
+										
+								String files[] = new File(directory).list();	
+											
+								for(String file : files){
+												
+								out.write("<a href=\"" + request.getContextPath() + "/downloadAction?bbsID="+bbsID+"&file="+
+									java.net.URLEncoder.encode(file,"UTF-8") + "\">" + file + "</a><br>");
+								}
+							%>
 					</tbody>
 				</table>
 				

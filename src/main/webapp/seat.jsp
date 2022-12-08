@@ -12,26 +12,31 @@
 <link rel="stylesheet" href="css/custom.css">
 <title>독서실 관리</title>
 <style>
-.seatAF {
-	width: 100%;
-	margin-top: 80px;
-	margin-left: 43%;
+
+.seat input{
+	width:15%;
+	height:100px;
+	font-size:30pt;
+	margin:10px;
 }
-.seatAB {
-	width: 100%;
-	margin-top: 50px;
-	margin-left: 43%;
+.seatAF{
+	margin-top:100px;
+	display: flex;
+    justify-content: center;
 }
-.seatBF {
-	width: 100%;
-	margin-top: 50px;
-	margin-left: 43%;
+.seatAB{
+	display: flex;
+    justify-content: center;
 }
-.seatBB {
-	width: 100%;
-	margin-top: 50px;
-	margin-left: 43%;
+.seatBF{
+	display: flex;
+    justify-content: center;
 }
+.seatBB{
+	display: flex;
+    justify-content: center;
+}
+
 </style>
 </head>
 <body>
@@ -143,35 +148,36 @@
 		var _left = Math.ceil(( window.screen.width - 400 )/2);
 	    var _top = Math.ceil(( window.screen.height - 600 )/2); 
 	    </script>
-		
+	<div class="seat">
 		<div class = "seatAF">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-0','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-0">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-1','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-1">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-2','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-2">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-3','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-3">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-4','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-4">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-0','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-0">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-1','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-1">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-2','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-2">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-3','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-3">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-4','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-4">
 		</div>
 		<div class = "seatAB">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-5','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-5">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-6','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-6">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-7','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-7">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-8','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-8">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=A-9','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-9">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-5','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-5">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-6','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-6">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-7','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-7">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-8','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-8">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=A-9','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="A-9">
 		</div>
 		<div class = "seatBF">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-0','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-0" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-1','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-1" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-2','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-2" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-3','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-3" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-4','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-4" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-0','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-0" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-1','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-1" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-2','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-2" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-3','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-3" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-4','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-4" onclick="showPopup();">
 		</div>
 		<div class = "seatBB">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-5','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-5" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-6','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-6" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-7','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-7" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-8','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-8" onclick="showPopup();">
-		<input type="button" onclick="window.open('selectseat.jsp?seat=B-9','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-9" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-5','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-5" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-6','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-6" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-7','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-7" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-8','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-8" onclick="showPopup();">
+		<input type="button" class="btn btn-success" onclick="window.open('selectseat.jsp?seat=B-9','공부 시작종료','width=400, height=300, left=' + _left + ', top='+ _top)" value="B-9" onclick="showPopup();">
 		</div>
+	</div>
 	<!--이 파일의 애니메이션을 담당할 자바스크립트 참조선언 jquery를 특정 홈페이지에서 호출 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<!--js폴더 안에있는 bootstrap.js를 사용선언  -->
